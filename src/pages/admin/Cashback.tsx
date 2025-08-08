@@ -213,15 +213,15 @@ const Cashback = () => {
       </div>
 
       <Tabs defaultValue="tiers" className="w-full">
-        <TabsList>
-          <TabsTrigger value="tiers">Loyalty Tiers</TabsTrigger>
-          <TabsTrigger value="settings">Cashback Settings</TabsTrigger>
-          <TabsTrigger value="bonuses">Volume Bonuses</TabsTrigger>
-          <TabsTrigger value="analytics">Performance Analytics</TabsTrigger>
-        </TabsList>
-        
-        {/* Edit Settings Button - Show on Loyalty Tiers and Cashback Settings tabs */}
-        <div className="flex justify-end mt-4">
+        <div className="flex items-center justify-between mb-6">
+          <TabsList>
+            <TabsTrigger value="tiers">Loyalty Tiers</TabsTrigger>
+            <TabsTrigger value="settings">Cashback Settings</TabsTrigger>
+            <TabsTrigger value="bonuses">Volume Bonuses</TabsTrigger>
+            <TabsTrigger value="analytics">Performance Analytics</TabsTrigger>
+          </TabsList>
+          
+          {/* Edit Settings Button */}
           <Button 
             onClick={() => setEditingSettings(!editingSettings)}
             className="transition-opacity duration-200"

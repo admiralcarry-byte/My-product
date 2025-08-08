@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { AdminLayout } from "./components/AdminLayout";
@@ -20,6 +20,7 @@ import AdminProfile from "./pages/admin/Profile";
 import AdminSettings from "./pages/admin/Settings";
 import AIIntegration from "./pages/admin/AIIntegration";
 
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -29,7 +30,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<Navigate to="/admin" replace />} />
           <Route path="/admin-welcome" element={<AdminWelcome />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<AdminLayout><Dashboard /></AdminLayout>} />
@@ -43,6 +44,7 @@ const App = () => (
           <Route path="/admin/profile" element={<AdminLayout><AdminProfile /></AdminLayout>} />
           <Route path="/admin/settings" element={<AdminLayout><AdminSettings /></AdminLayout>} />
           <Route path="/admin/ai-integration" element={<AdminLayout><AIIntegration /></AdminLayout>} />
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

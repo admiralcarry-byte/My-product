@@ -35,7 +35,8 @@ import {
   FileText,
   MessageSquare,
   Zap,
-  X
+  X,
+  Network
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -85,6 +86,7 @@ const navigation = [
     href: "/admin/campaigns",
     icon: Megaphone,
   },
+  
 ];
 
 export function AdminLayout({ children }: AdminLayoutProps) {

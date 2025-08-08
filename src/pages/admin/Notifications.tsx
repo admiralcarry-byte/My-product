@@ -280,31 +280,40 @@ const Notifications = () => {
         <CardContent>
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>Status</TableHead>
-                <TableHead>Title</TableHead>
-                <TableHead>Message</TableHead>
-                <TableHead>Audience</TableHead>
-                <TableHead>Recipients</TableHead>
-                <TableHead>Sent</TableHead>
+              <TableRow className="bg-gradient-to-r from-blue-50 to-blue-100">
+                <TableHead className="text-blue-800 font-semibold">Status</TableHead>
+                <TableHead className="text-blue-800 font-semibold">Title</TableHead>
+                <TableHead className="text-blue-800 font-semibold">Message</TableHead>
+                <TableHead className="text-blue-800 font-semibold">Audience</TableHead>
+                <TableHead className="text-blue-800 font-semibold">Recipients</TableHead>
+                <TableHead className="text-blue-800 font-semibold">Sent</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {notificationHistory.map((notif) => (
-                <TableRow key={notif.id}>
+              {notificationHistory.map((notif, index) => (
+                <TableRow 
+                  key={notif.id}
+                  className={`${
+                    index % 2 === 0 
+                      ? 'bg-gradient-to-r from-green-50 to-green-100 hover:from-green-100 hover:to-green-200' 
+                      : 'bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200'
+                  } transition-colors duration-200`}
+                >
                   <TableCell>
                     <div className="flex items-center gap-2">
                       {getStatusIcon(notif.status)}
                       {getStatusBadge(notif.status)}
                     </div>
                   </TableCell>
-                  <TableCell className="font-medium">{notif.title}</TableCell>
-                  <TableCell className="max-w-xs truncate">{notif.message}</TableCell>
+                  <TableCell className="font-medium text-gray-800">{notif.title}</TableCell>
+                  <TableCell className="max-w-xs truncate text-gray-700">{notif.message}</TableCell>
                   <TableCell>
-                    <Badge variant="outline">{notif.audience}</Badge>
+                    <Badge variant="outline" className="bg-white border-blue-300 text-blue-700">
+                      {notif.audience}
+                    </Badge>
                   </TableCell>
-                  <TableCell>{notif.recipients}</TableCell>
-                  <TableCell className="text-muted-foreground">{notif.sent}</TableCell>
+                  <TableCell className="font-semibold text-gray-800">{notif.recipients}</TableCell>
+                  <TableCell className="text-gray-600">{notif.sent}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

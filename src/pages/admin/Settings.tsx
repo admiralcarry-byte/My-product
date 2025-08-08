@@ -24,7 +24,8 @@ import {
   Save,
   RefreshCw,
   Download,
-  Upload
+  Upload,
+  Users as UsersIcon
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -69,6 +70,12 @@ const Settings = () => {
     maxFileSize: 10
   });
 
+  const [influencerSettings, setInfluencerSettings] = useState({
+    minimumClientsForMonetization: 50,
+    commissionPercentagePerClient: 10,
+    enableInfluencerMonetization: true
+  });
+
   const handleSaveGeneral = () => {
     toast({
       title: "Settings Saved",
@@ -94,6 +101,13 @@ const Settings = () => {
     toast({
       title: "System Settings Saved",
       description: "System configuration has been updated.",
+    });
+  };
+
+  const handleSaveInfluencer = () => {
+    toast({
+      title: "Influencer Settings Saved",
+      description: "Influencer monetization settings have been updated.",
     });
   };
 
@@ -132,10 +146,11 @@ const Settings = () => {
       </div>
 
       <Tabs defaultValue="general" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="notifications">Notifications</TabsTrigger>
           <TabsTrigger value="loyalty">Loyalty Program</TabsTrigger>
+          <TabsTrigger value="influencer">Influencer</TabsTrigger>
           <TabsTrigger value="system">System</TabsTrigger>
         </TabsList>
         
@@ -364,6 +379,60 @@ const Settings = () => {
               <Button onClick={handleSaveLoyalty}>
                 <Save className="w-4 h-4 mr-2" />
                 Save Loyalty Settings
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="influencer" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <UsersIcon className="w-5 h-5" />
+                Influencer Commission Settings
+              </CardTitle>
+              <CardDescription>Configure influencer monetization and commission settings</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <div className="text-base">Enable Influencer Monetization</div>
+                  <div className="text-sm text-muted-foreground">Enable or disable influencer monetization logic globally</div>
+                </div>
+                <Switch
+                  checked={influencerSettings.enableInfluencerMonetization}
+                  onCheckedChange={(checked) => 
+                    setInfluencerSettings(prev => ({ ...prev, enableInfluencerMonetization: checked }))
+                  }
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="minClients">Minimum Clients Required for Monetization</Label>
+                  <Input
+                    id="minClients"
+                    type="number"
+                    value={influencerSettings.minimumClientsForMonetization}
+                    onChange={(e) => setInfluencerSettings(prev => ({ ...prev, minimumClientsForMonetization: parseInt(e.target.value) }))}
+                    placeholder="50"
+                  />
+                  <p className="text-sm text-muted-foreground">Number of active clients required before an influencer can start earning commissions</p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="commissionRate">Commission Percentage per Client Purchase</Label>
+                  <Input
+                    id="commissionRate"
+                    type="number"
+                    value={influencerSettings.commissionPercentagePerClient}
+                    onChange={(e) => setInfluencerSettings(prev => ({ ...prev, commissionPercentagePerClient: parseFloat(e.target.value) }))}
+                    placeholder="10"
+                  />
+                  <p className="text-sm text-muted-foreground">Percentage of each client purchase that goes to the influencer</p>
+                </div>
+              </div>
+              <Button onClick={handleSaveInfluencer}>
+                <Save className="w-4 h-4 mr-2" />
+                Save Influencer Settings
               </Button>
             </CardContent>
           </Card>

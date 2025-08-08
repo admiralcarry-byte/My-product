@@ -85,57 +85,65 @@ const Reports = () => {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card>
+        <Card className="bg-gradient-to-br from-white to-water-mist border-0 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <div className="p-2 rounded-lg bg-gradient-to-br from-primary to-water-blue">
+              <DollarSign className="h-4 w-4 text-white" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$36,580</div>
-            <div className="flex items-center text-xs text-muted-foreground">
-              <TrendingUp className="w-3 h-3 mr-1 text-success" />
+            <div className="text-2xl font-bold text-primary">$36,580</div>
+            <div className="flex items-center text-xs text-success font-medium">
+              <TrendingUp className="w-3 h-3 mr-1" />
               +18.2% from last month
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-gradient-to-br from-white to-water-light/20 border-0 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Active Users</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <div className="p-2 rounded-lg bg-gradient-to-br from-water-blue to-water-deep">
+              <Users className="h-4 w-4 text-white" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">1,234</div>
-            <div className="flex items-center text-xs text-muted-foreground">
-              <TrendingUp className="w-3 h-3 mr-1 text-success" />
+            <div className="text-2xl font-bold text-water-blue">1,234</div>
+            <div className="flex items-center text-xs text-success font-medium">
+              <TrendingUp className="w-3 h-3 mr-1" />
               +12.5% from last month
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-gradient-to-br from-white to-success/10 border-0 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Liters</CardTitle>
-            <Droplets className="h-4 w-4 text-water-blue" />
+            <div className="p-2 rounded-lg bg-gradient-to-br from-success to-success/80">
+              <Droplets className="h-4 w-4 text-white" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">73,200L</div>
-            <div className="flex items-center text-xs text-muted-foreground">
-              <TrendingUp className="w-3 h-3 mr-1 text-success" />
+            <div className="text-2xl font-bold text-success">73,200L</div>
+            <div className="flex items-center text-xs text-success font-medium">
+              <TrendingUp className="w-3 h-3 mr-1" />
               +15.3% from last month
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-gradient-to-br from-white to-accent/10 border-0 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Avg. Order Value</CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
+            <div className="p-2 rounded-lg bg-gradient-to-br from-accent to-accent/80">
+              <Calendar className="h-4 w-4 text-white" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$29.60</div>
-            <div className="flex items-center text-xs text-muted-foreground">
-              <TrendingUp className="w-3 h-3 mr-1 text-success" />
+            <div className="text-2xl font-bold text-accent">$29.60</div>
+            <div className="flex items-center text-xs text-success font-medium">
+              <TrendingUp className="w-3 h-3 mr-1" />
               +8.1% from last month
             </div>
           </CardContent>

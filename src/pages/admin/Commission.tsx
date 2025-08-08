@@ -269,23 +269,24 @@ const Commission = () => {
           <TabsTrigger value="payouts">Payout Requests</TabsTrigger>
         </TabsList>
         
-        {/* Edit Settings Button - Only show on Commission Settings tab */}
-        <div className="flex justify-end mt-4">
-          <Button 
-            onClick={() => setEditingSettings(!editingSettings)}
-            className="h-12 px-6 text-base transition-all duration-200 hover:scale-105"
-            size="lg"
-          >
-            {editingSettings ? <Save className="w-5 h-5 mr-2" /> : <Edit className="w-5 h-5 mr-2" />}
-            {editingSettings ? "Save Settings" : "Edit Settings"}
-          </Button>
-        </div>
-        
         <TabsContent value="settings" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>General Commission Settings</CardTitle>
-              <CardDescription>Configure how commissions are calculated and paid</CardDescription>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>General Commission Settings</CardTitle>
+                  <CardDescription>Configure how commissions are calculated and paid</CardDescription>
+                </div>
+                {/* Edit Settings Button in upper right corner */}
+                <Button 
+                  onClick={() => setEditingSettings(!editingSettings)}
+                  className="transition-all duration-200 hover:scale-105"
+                  variant={editingSettings ? "default" : "outline"}
+                >
+                  {editingSettings ? <Save className="w-4 h-4 mr-2" /> : <Edit className="w-4 h-4 mr-2" />}
+                  {editingSettings ? "Save Settings" : "Edit Settings"}
+                </Button>
+              </div>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
