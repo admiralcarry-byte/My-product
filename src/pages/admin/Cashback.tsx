@@ -140,12 +140,14 @@ const Cashback = () => {
   const avgGrowthRate = tierStats.reduce((sum, stat) => sum + stat.growthRate, 0) / tierStats.length;
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 animate-fade-in">
+      {/* Welcome Section */}
+      <div className="flex items-center justify-between p-6 rounded-xl bg-gradient-to-r from-white to-slate-50 border border-slate-200 shadow-sm">
         <div>
-          <h1 className="text-3xl font-bold">Cashback Settings</h1>
-          <p className="text-muted-foreground">Configure loyalty tiers and cashback rewards</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-water-blue bg-clip-text text-transparent">
+            Cashback Settings
+          </h1>
+          <p className="text-muted-foreground mt-1">Configure loyalty tiers and cashback rewards</p>
         </div>
       </div>
 
@@ -261,6 +263,13 @@ const Cashback = () => {
                         <Input
                           type="number"
                           value={benefits.multiplier}
+                          onChange={(e) => setCashbackSettings(prev => ({
+                            ...prev,
+                            tierBenefits: {
+                              ...prev.tierBenefits,
+                              [tier]: { ...prev.tierBenefits[tier as keyof typeof prev.tierBenefits], multiplier: parseFloat(e.target.value) }
+                            }
+                          }))}
                           disabled={!editingSettings}
                           step="0.1"
                         />
@@ -270,6 +279,13 @@ const Cashback = () => {
                         <Input
                           type="number"
                           value={benefits.bonusRate}
+                          onChange={(e) => setCashbackSettings(prev => ({
+                            ...prev,
+                            tierBenefits: {
+                              ...prev.tierBenefits,
+                              [tier]: { ...prev.tierBenefits[tier as keyof typeof prev.tierBenefits], bonusRate: parseFloat(e.target.value) }
+                            }
+                          }))}
                           disabled={!editingSettings}
                           step="0.1"
                         />
@@ -281,6 +297,13 @@ const Cashback = () => {
                       <Input
                         type="number"
                         value={benefits.minPurchase}
+                        onChange={(e) => setCashbackSettings(prev => ({
+                          ...prev,
+                          tierBenefits: {
+                            ...prev.tierBenefits,
+                            [tier]: { ...prev.tierBenefits[tier as keyof typeof prev.tierBenefits], minPurchase: parseInt(e.target.value) }
+                          }
+                        }))}
                         disabled={!editingSettings}
                       />
                     </div>
@@ -292,6 +315,13 @@ const Cashback = () => {
                           <Input
                             type="number"
                             value={benefits.upgradeRequirement}
+                            onChange={(e) => setCashbackSettings(prev => ({
+                              ...prev,
+                              tierBenefits: {
+                                ...prev.tierBenefits,
+                                [tier]: { ...prev.tierBenefits[tier as keyof typeof prev.tierBenefits], upgradeRequirement: parseInt(e.target.value) }
+                              }
+                            }))}
                             disabled={!editingSettings}
                           />
                           <span className="text-sm text-muted-foreground">liters</span>
@@ -340,6 +370,7 @@ const Cashback = () => {
                     id="baseCashback"
                     type="number"
                     value={cashbackSettings.baseCashbackRate}
+                    onChange={(e) => setCashbackSettings(prev => ({ ...prev, baseCashbackRate: parseFloat(e.target.value) }))}
                     disabled={!editingSettings}
                     step="0.1"
                   />
@@ -363,6 +394,12 @@ const Cashback = () => {
                     <Switch
                       checked={cashbackSettings.loyaltyProgram.enabled}
                       disabled={!editingSettings}
+                      onCheckedChange={(checked) => 
+                        setCashbackSettings(prev => ({
+                          ...prev,
+                          loyaltyProgram: { ...prev.loyaltyProgram, enabled: checked }
+                        }))
+                      }
                     />
                   </div>
 
@@ -372,6 +409,10 @@ const Cashback = () => {
                       <Input
                         type="number"
                         value={cashbackSettings.loyaltyProgram.streakBonus}
+                        onChange={(e) => setCashbackSettings(prev => ({
+                          ...prev,
+                          loyaltyProgram: { ...prev.loyaltyProgram, streakBonus: parseFloat(e.target.value) }
+                        }))}
                         disabled={!editingSettings}
                         step="0.1"
                       />
@@ -385,6 +426,10 @@ const Cashback = () => {
                       <Input
                         type="number"
                         value={cashbackSettings.loyaltyProgram.referralBonus}
+                        onChange={(e) => setCashbackSettings(prev => ({
+                          ...prev,
+                          loyaltyProgram: { ...prev.loyaltyProgram, referralBonus: parseFloat(e.target.value) }
+                        }))}
                         disabled={!editingSettings}
                         step="0.1"
                       />
@@ -398,6 +443,10 @@ const Cashback = () => {
                       <Input
                         type="number"
                         value={cashbackSettings.loyaltyProgram.birthdayBonus}
+                        onChange={(e) => setCashbackSettings(prev => ({
+                          ...prev,
+                          loyaltyProgram: { ...prev.loyaltyProgram, birthdayBonus: parseFloat(e.target.value) }
+                        }))}
                         disabled={!editingSettings}
                         step="1"
                       />
@@ -441,12 +490,22 @@ const Cashback = () => {
                           <Input
                             type="number"
                             value={bonus.threshold}
+                            onChange={(e) => {
+                              const newVolumeBonuses = [...cashbackSettings.volumeBonuses];
+                              newVolumeBonuses[index] = { ...bonus, threshold: parseInt(e.target.value) };
+                              setCashbackSettings(prev => ({ ...prev, volumeBonuses: newVolumeBonuses }));
+                            }}
                             className="w-20"
                             disabled={!editingSettings}
                           />
                           <Input
                             type="number"
                             value={bonus.bonus}
+                            onChange={(e) => {
+                              const newVolumeBonuses = [...cashbackSettings.volumeBonuses];
+                              newVolumeBonuses[index] = { ...bonus, bonus: parseFloat(e.target.value) };
+                              setCashbackSettings(prev => ({ ...prev, volumeBonuses: newVolumeBonuses }));
+                            }}
                             className="w-20"
                             disabled={!editingSettings}
                             step="0.1"

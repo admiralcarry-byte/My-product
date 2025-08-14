@@ -28,7 +28,11 @@ import {
   Target,
   CheckCircle,
   Clock,
-  AlertCircle
+  AlertCircle,
+  PartyPopper,
+  Trophy,
+  Heart,
+  Sparkles
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -78,21 +82,52 @@ const Notifications = () => {
       status: "sent",
       recipients: 1234
     },
+    { 
+      id: 5, 
+      title: "New Referral Added", 
+      message: "Maria Silva has joined your network! You now have 21 active referrals.", 
+      audience: "Pedro Influencer",
+      sent: "3 hours ago",
+      status: "sent",
+      recipients: 1,
+      type: "referral"
+    },
+    { 
+      id: 6, 
+      title: "Network Growth Milestone", 
+      message: "Congratulations! You've reached 50 active clients and are eligible for Gold tier promotion!", 
+      audience: "Sofia Marketing",
+      sent: "1 day ago",
+      status: "sent",
+      recipients: 1,
+      type: "achievement"
+    },
+    { 
+      id: 7, 
+      title: "Level Promotion Achieved", 
+              message: "Pedro Influencer has been automatically promoted to Platinum tier!", 
+      audience: "All Influencers",
+      sent: "2 days ago",
+      status: "sent",
+      recipients: 45,
+      type: "promotion"
+    },
   ];
 
   const handleSendNotification = () => {
     if (!notification.title || !notification.message || !notification.audience) {
       toast({
         title: "Missing Information",
-        description: "Please fill in all required fields",
+        description: "Please fill in all required fields to send the notification",
         variant: "destructive",
       });
       return;
     }
 
     toast({
-      title: "Notification Sent",
-      description: `Notification sent to ${notification.audience}`,
+      title: "Notification Sent Successfully!",
+      description: `Your notification has been sent to ${notification.audience} recipients`,
+      variant: "success",
     });
 
     setNotification({
@@ -116,6 +151,23 @@ const Notifications = () => {
     }
   };
 
+  const getNotificationTypeIcon = (type: string) => {
+    switch (type) {
+      case "achievement":
+        return <Trophy className="w-4 h-4 text-yellow-600" />;
+      case "promotion":
+        return <PartyPopper className="w-4 h-4 text-purple-600" />;
+      case "referral":
+        return <Heart className="w-4 h-4 text-pink-600" />;
+      case "reward":
+        return <Gift className="w-4 h-4 text-green-600" />;
+      case "reminder":
+        return <Clock className="w-4 h-4 text-blue-600" />;
+      default:
+        return <Bell className="w-4 h-4 text-gray-600" />;
+    }
+  };
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "sent":
@@ -130,19 +182,29 @@ const Notifications = () => {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-foreground">Notifications</h1>
-        <p className="text-muted-foreground">Send push notifications and manage communication with users</p>
+    <div className="space-y-6 animate-fade-in">
+      {/* Enhanced Header Section */}
+      <div className="flex items-center justify-between p-6 rounded-xl bg-gradient-to-r from-white to-slate-50 border border-slate-200 shadow-sm">
+        <div>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-water-blue bg-clip-text text-transparent">
+            Notifications
+          </h1>
+          <p className="text-muted-foreground mt-1">Send push notifications and manage communication with users</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Badge className="bg-gradient-to-r from-primary to-primary/80 text-white shadow-primary animate-pulse-glow">
+            <Bell className="w-4 h-4 mr-1" />
+            Active System
+          </Badge>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Send Notification Form */}
-        <Card>
-          <CardHeader>
+        <Card className="border-0 shadow-lg">
+          <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
             <CardTitle className="flex items-center gap-2">
-              <Send className="w-5 h-5" />
+              <Send className="w-5 h-5 text-primary" />
               Send New Notification
             </CardTitle>
             <CardDescription>Create and send push notifications to users</CardDescription>
@@ -199,6 +261,8 @@ const Notifications = () => {
                   <SelectItem value="reward">Reward</SelectItem>
                   <SelectItem value="reminder">Reminder</SelectItem>
                   <SelectItem value="achievement">Achievement</SelectItem>
+                  <SelectItem value="referral">Referral</SelectItem>
+                  <SelectItem value="promotion">Level Promotion</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -268,11 +332,11 @@ const Notifications = () => {
         </div>
       </div>
 
-      {/* Notification History */}
-      <Card>
-        <CardHeader>
+      {/* Enhanced Notification History */}
+      <Card className="border-0 shadow-lg">
+        <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
           <CardTitle className="flex items-center gap-2">
-            <Calendar className="w-5 h-5" />
+            <Calendar className="w-5 h-5 text-primary" />
             Notification History
           </CardTitle>
           <CardDescription>Recent notifications sent to users</CardDescription>
@@ -280,13 +344,13 @@ const Notifications = () => {
         <CardContent>
           <Table>
             <TableHeader>
-              <TableRow className="bg-gradient-to-r from-blue-50 to-blue-100">
-                <TableHead className="text-blue-800 font-semibold">Status</TableHead>
-                <TableHead className="text-blue-800 font-semibold">Title</TableHead>
-                <TableHead className="text-blue-800 font-semibold">Message</TableHead>
-                <TableHead className="text-blue-800 font-semibold">Audience</TableHead>
-                <TableHead className="text-blue-800 font-semibold">Recipients</TableHead>
-                <TableHead className="text-blue-800 font-semibold">Sent</TableHead>
+              <TableRow className="bg-slate-50/50">
+                <TableHead className="font-semibold">Status</TableHead>
+                <TableHead className="font-semibold">Title</TableHead>
+                <TableHead className="font-semibold">Message</TableHead>
+                <TableHead className="font-semibold">Audience</TableHead>
+                <TableHead className="font-semibold">Recipients</TableHead>
+                <TableHead className="font-semibold">Sent</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -305,7 +369,12 @@ const Notifications = () => {
                       {getStatusBadge(notif.status)}
                     </div>
                   </TableCell>
-                  <TableCell className="font-medium text-gray-800">{notif.title}</TableCell>
+                  <TableCell className="font-medium text-gray-800">
+                    <div className="flex items-center gap-2">
+                      {getNotificationTypeIcon(notif.type)}
+                      {notif.title}
+                    </div>
+                  </TableCell>
                   <TableCell className="max-w-xs truncate text-gray-700">{notif.message}</TableCell>
                   <TableCell>
                     <Badge variant="outline" className="bg-white border-blue-300 text-blue-700">

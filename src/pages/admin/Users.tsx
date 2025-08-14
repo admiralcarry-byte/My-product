@@ -221,17 +221,17 @@ const Users = () => {
 
   const handleChangePassword = (user: any) => {
     if (!newPassword) {
-      toast({
-        title: "Error",
-        description: "Please enter a new password",
-        variant: "destructive",
-      });
+          toast({
+      title: "Password Required",
+      description: "Please enter a new password to continue",
+      variant: "warning",
+    });
       return;
     }
     
     toast({
-      title: "Password Updated",
-      description: `Password changed successfully for ${user.name}`,
+      title: "Password Updated Successfully!",
+      description: `Password has been changed for ${user.name}`,
       variant: "success",
     });
     setNewPassword("");
@@ -240,8 +240,8 @@ const Users = () => {
 
   const handleUpdateUser = (updatedData: any) => {
     toast({
-      title: "User Updated",
-      description: `${updatedData.name}'s information has been updated`,
+      title: "User Updated Successfully!",
+      description: `${updatedData.name}'s information has been updated and saved`,
       variant: "success",
     });
     setEditingUser(null);
@@ -250,8 +250,8 @@ const Users = () => {
   const handleBlockUser = (user: any) => {
     const action = user.status === "active" ? "blocked" : "unblocked";
     toast({
-      title: `User ${action}`,
-      description: `${user.name} has been ${action}`,
+      title: `User ${action.charAt(0).toUpperCase() + action.slice(1)} Successfully!`,
+      description: `${user.name} has been ${action} and the action has been recorded`,
       variant: action === "blocked" ? "warning" : "success",
     });
   };
@@ -264,8 +264,8 @@ const Users = () => {
   const handleInfluencerStatusChange = (influencer: any, newStatus: string) => {
     const action = newStatus === "active" ? "activated" : newStatus === "blocked" ? "blocked" : "deleted";
     toast({
-      title: `Influencer ${action}`,
-      description: `${influencer.name} has been ${action}`,
+      title: `Influencer ${action.charAt(0).toUpperCase() + action.slice(1)} Successfully!`,
+      description: `${influencer.name} has been ${action} and the status has been updated`,
       variant: newStatus === "active" ? "success" : newStatus === "blocked" ? "warning" : "destructive",
     });
   };
@@ -828,12 +828,14 @@ const Users = () => {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 animate-fade-in">
+      {/* Welcome Section */}
+      <div className="flex items-center justify-between p-6 rounded-xl bg-gradient-to-r from-white to-slate-50 border border-slate-200 shadow-sm">
         <div>
-          <h1 className="text-3xl font-bold">User Management</h1>
-          <p className="text-muted-foreground">Manage customers and influencers</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-water-blue bg-clip-text text-transparent">
+            User Management
+          </h1>
+          <p className="text-muted-foreground mt-1">Manage customers and influencers</p>
         </div>
         <Dialog>
           <DialogTrigger asChild>

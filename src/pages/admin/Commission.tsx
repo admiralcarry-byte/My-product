@@ -129,7 +129,7 @@ const Commission = () => {
   ];
 
   // Mock commission rules
-  const commissionRules = [
+  const [commissionRules, setCommissionRules] = useState([
     {
       id: 1,
       name: "Base Commission",
@@ -154,7 +154,7 @@ const Commission = () => {
       type: "percentage",
       active: false
     }
-  ];
+  ]);
 
   const getTierIcon = (tier: string) => {
     switch (tier) {
@@ -189,12 +189,14 @@ const Commission = () => {
   const activeInfluencers = influencers.filter(inf => inf.status === "active").length;
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 animate-fade-in">
+      {/* Welcome Section */}
+      <div className="flex items-center justify-between p-6 rounded-xl bg-gradient-to-r from-white to-slate-50 border border-slate-200 shadow-sm">
         <div>
-          <h1 className="text-3xl font-bold">Commission Settings</h1>
-          <p className="text-muted-foreground">Manage influencer commission structure and payouts</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-water-blue bg-clip-text text-transparent">
+            Commission Settings
+          </h1>
+          <p className="text-muted-foreground mt-1">Manage influencer commission structure and payouts</p>
         </div>
       </div>
 
@@ -292,13 +294,14 @@ const Commission = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="baseCommission">Base Commission Rate (%)</Label>
-                  <Input
-                    id="baseCommission"
-                    type="number"
-                    value={commissionSettings.baseCommission}
-                    disabled={!editingSettings}
-                    step="0.1"
-                  />
+                                     <Input
+                     id="baseCommission"
+                     type="number"
+                     value={commissionSettings.baseCommission}
+                     onChange={(e) => setCommissionSettings(prev => ({ ...prev, baseCommission: parseFloat(e.target.value) }))}
+                     disabled={!editingSettings}
+                     step="0.1"
+                   />
                   <p className="text-xs text-muted-foreground">
                     Base percentage of sales converted to commission
                   </p>
@@ -306,12 +309,13 @@ const Commission = () => {
                 
                 <div className="space-y-2">
                   <Label htmlFor="minimumUsers">Minimum Active Users</Label>
-                  <Input
-                    id="minimumUsers"
-                    type="number"
-                    value={commissionSettings.minimumActiveUsers}
-                    disabled={!editingSettings}
-                  />
+                                     <Input
+                     id="minimumUsers"
+                     type="number"
+                     value={commissionSettings.minimumActiveUsers}
+                     onChange={(e) => setCommissionSettings(prev => ({ ...prev, minimumActiveUsers: parseInt(e.target.value) }))}
+                     disabled={!editingSettings}
+                   />
                   <p className="text-xs text-muted-foreground">
                     Minimum users required to earn commission
                   </p>
@@ -319,13 +323,14 @@ const Commission = () => {
 
                 <div className="space-y-2">
                   <Label htmlFor="payoutThreshold">Payout Threshold ($)</Label>
-                  <Input
-                    id="payoutThreshold"
-                    type="number"
-                    value={commissionSettings.payoutThreshold}
-                    disabled={!editingSettings}
-                    step="1"
-                  />
+                                     <Input
+                     id="payoutThreshold"
+                     type="number"
+                     value={commissionSettings.payoutThreshold}
+                     onChange={(e) => setCommissionSettings(prev => ({ ...prev, payoutThreshold: parseFloat(e.target.value) }))}
+                     disabled={!editingSettings}
+                     step="1"
+                   />
                   <p className="text-xs text-muted-foreground">
                     Minimum amount required for payout
                   </p>
@@ -333,13 +338,14 @@ const Commission = () => {
 
                 <div className="space-y-2">
                   <Label htmlFor="commissionCap">Monthly Commission Cap ($)</Label>
-                  <Input
-                    id="commissionCap"
-                    type="number"
-                    value={commissionSettings.commissionCap}
-                    disabled={!editingSettings}
-                    step="1"
-                  />
+                                     <Input
+                     id="commissionCap"
+                     type="number"
+                     value={commissionSettings.commissionCap}
+                     onChange={(e) => setCommissionSettings(prev => ({ ...prev, commissionCap: parseFloat(e.target.value) }))}
+                     disabled={!editingSettings}
+                     step="1"
+                   />
                   <p className="text-xs text-muted-foreground">
                     Maximum commission per influencer per month
                   </p>
@@ -355,12 +361,19 @@ const Commission = () => {
                         {getTierIcon(tier)}
                         {tier}
                       </Label>
-                      <Input
-                        type="number"
-                        value={multiplier}
-                        disabled={!editingSettings}
-                        step="0.1"
-                      />
+                                             <Input
+                         type="number"
+                         value={multiplier}
+                         onChange={(e) => setCommissionSettings(prev => ({
+                           ...prev,
+                           tierMultipliers: {
+                             ...prev.tierMultipliers,
+                             [tier]: parseFloat(e.target.value)
+                           }
+                         }))}
+                         disabled={!editingSettings}
+                         step="0.1"
+                       />
                     </div>
                   ))}
                 </div>
@@ -378,21 +391,28 @@ const Commission = () => {
                   <Switch
                     checked={commissionSettings.autoApproval}
                     disabled={!editingSettings}
+                    onCheckedChange={(checked) => 
+                      setCommissionSettings(prev => ({ ...prev, autoApproval: checked }))
+                    }
                   />
                 </div>
                 
                 <div className="space-y-2">
                   <Label htmlFor="payoutFrequency">Payout Frequency</Label>
-                  <Select value={commissionSettings.payoutFrequency} disabled={!editingSettings}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="weekly">Weekly</SelectItem>
-                      <SelectItem value="monthly">Monthly</SelectItem>
-                      <SelectItem value="quarterly">Quarterly</SelectItem>
-                    </SelectContent>
-                  </Select>
+                                     <Select 
+                     value={commissionSettings.payoutFrequency} 
+                     onValueChange={(value) => setCommissionSettings(prev => ({ ...prev, payoutFrequency: value }))}
+                     disabled={!editingSettings}
+                   >
+                     <SelectTrigger>
+                       <SelectValue />
+                     </SelectTrigger>
+                     <SelectContent>
+                       <SelectItem value="weekly">Weekly</SelectItem>
+                       <SelectItem value="monthly">Monthly</SelectItem>
+                       <SelectItem value="quarterly">Quarterly</SelectItem>
+                     </SelectContent>
+                   </Select>
                 </div>
               </div>
             </CardContent>
@@ -550,7 +570,16 @@ const Commission = () => {
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Switch checked={rule.active} />
+                      <Switch 
+                        checked={rule.active}
+                        onCheckedChange={(checked) => {
+                          setCommissionRules(prev => 
+                            prev.map(r => 
+                              r.id === rule.id ? { ...r, active: checked } : r
+                            )
+                          );
+                        }}
+                      />
                       <Button variant="ghost" size="sm">
                         <Edit className="w-4 h-4" />
                       </Button>

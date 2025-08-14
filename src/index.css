@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Toast Animation */
+@keyframes progress-shrink {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+.animate-progress-shrink {
+  animation: progress-shrink 4s linear forwards;
+}
+
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */

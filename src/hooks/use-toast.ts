@@ -162,10 +162,10 @@ function toast({ ...props }: Toast) {
     },
   })
 
-  // Auto-dismiss after 4 seconds (4000ms)
+  // Auto-dismiss after 5 seconds (5000ms)
   setTimeout(() => {
     dismiss()
-  }, 4000)
+  }, 5000)
 
   return {
     id: id,
@@ -194,4 +194,13 @@ function useToast() {
   }
 }
 
-export { useToast, toast }
+// Enhanced toast function with better defaults
+const enhancedToast = ({ variant = "default", ...props }: Toast) => {
+  return toast({
+    variant,
+    duration: 5000,
+    ...props,
+  });
+};
+
+export { useToast, toast, enhancedToast }

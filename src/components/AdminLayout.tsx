@@ -36,7 +36,13 @@ import {
   MessageSquare,
   Zap,
   X,
-  Network
+  Network,
+  CreditCard,
+  Award,
+  Coins,
+  History,
+  Plus,
+  Brain
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -86,7 +92,56 @@ const navigation = [
     href: "/admin/campaigns",
     icon: Megaphone,
   },
-  
+  {
+    name: "Loyalty Levels",
+    href: "/admin/loyalty-levels",
+    icon: Award,
+  },
+  {
+    name: "Client Points",
+    href: "/admin/client-points",
+    icon: Coins,
+  },
+  {
+    name: "Purchase History",
+    href: "/admin/purchase-history",
+    icon: History,
+  },
+  {
+    name: "Network Switching",
+    href: "/admin/network-switching",
+    icon: Network,
+  },
+  {
+    name: "Purchase Entry",
+    href: "/admin/purchase-entry",
+    icon: Plus,
+  },
+  {
+    name: "Bank Details",
+    href: "/admin/bank-details",
+    icon: CreditCard,
+  },
+  {
+    name: "Commission Requests",
+    href: "/admin/commission-request",
+    icon: DollarSign,
+  },
+  {
+    name: "AI Insights",
+    href: "/admin/ai-insights",
+    icon: Brain,
+  },
+  {
+    name: "Billing Integration",
+    href: "/admin/billing-integration",
+    icon: CreditCard,
+  },
+  {
+    name: "Influencer Levels",
+    href: "/admin/influencer-levels",
+    icon: TrendingUp,
+  },
 ];
 
 export function AdminLayout({ children }: AdminLayoutProps) {
@@ -124,19 +179,19 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       <div
         className={cn(
           "fixed inset-y-0 left-0 z-50 w-64 transform transition-all duration-300 ease-in-out lg:translate-x-0",
-          "bg-gradient-to-b from-water-mist to-card border-r border-border shadow-lg",
+          "bg-gradient-to-b from-slate-800 to-slate-900 border-r border-slate-700 shadow-xl",
           sidebarOpen ? "translate-x-0 animate-slide-in-left" : "-translate-x-full lg:translate-x-0"
         )}
       >
         {/* Sidebar header */}
-        <div className="flex items-center justify-between p-6 border-b border-border bg-white/50 backdrop-blur-sm">
+        <div className="flex items-center justify-between p-6 border-b border-slate-700 bg-slate-800/80 backdrop-blur-sm">
           <div className="flex items-center gap-2">
             <div className="p-2 rounded-xl bg-gradient-to-br from-water-blue to-water-deep shadow-water">
               <Droplets className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-foreground">ÁGUA TWEZAH</h1>
-              <p className="text-xs text-muted-foreground">Admin Panel</p>
+              <h1 className="text-lg font-bold text-white">ÁGUA TWEZAH</h1>
+              <p className="text-xs text-slate-300">Admin Panel</p>
             </div>
           </div>
           <Button
@@ -150,7 +205,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-2">
+        <nav className="flex-1 p-4 space-y-2 bg-slate-800/50">
           {navigation.map((item) => {
             const isActive = location.pathname === item.href;
             return (
@@ -161,7 +216,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                   "flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200",
                   isActive
                     ? "bg-gradient-to-r from-primary to-water-blue text-white shadow-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-water-mist hover:shadow-md hover:scale-105"
+                    : "text-slate-300 hover:text-white hover:bg-slate-700/50 hover:shadow-md hover:scale-105"
                 )}
                 onClick={() => setSidebarOpen(false)}
               >
@@ -173,42 +228,42 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         </nav>
 
         {/* AI Integration Button */}
-        <div className="p-4 border-t border-border">
+        <div className="p-4 border-t border-slate-700 bg-slate-800/30">
           <Link
             to="/admin/ai-integration"
             className={cn(
               "flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 mb-4",
               location.pathname === "/admin/ai-integration"
                 ? "bg-gradient-to-r from-accent to-accent/80 text-white shadow-lg"
-                : "text-muted-foreground hover:text-foreground hover:bg-accent/10 hover:shadow-md hover:scale-105"
+                : "text-slate-300 hover:text-white hover:bg-slate-700/50 hover:shadow-md hover:scale-105"
             )}
             onClick={() => setSidebarOpen(false)}
           >
             <Zap className="w-5 h-5" />
             AI Integration
           </Link>
-          <div className="border-t border-border"></div>
+          <div className="border-t border-slate-700"></div>
         </div>
 
         {/* Loyalty tier legend */}
-        <div className="px-4 pb-4">
-          <h3 className="text-xs font-semibold text-muted-foreground mb-2 uppercase tracking-wider">Loyalty Tiers</h3>
+        <div className="px-4 pb-4 bg-slate-800/30">
+          <h3 className="text-xs font-semibold text-slate-300 mb-2 uppercase tracking-wider">Loyalty Tiers</h3>
           <div className="grid grid-cols-2 gap-2">
-            <div className="flex items-center gap-1.5 p-2 rounded-md bg-muted/30">
+            <div className="flex items-center gap-1.5 p-2 rounded-md bg-slate-700/50">
               <Crown className="w-3 h-3 text-loyalty-platinum" />
-              <span className="text-xs font-medium text-muted-foreground">Platinum</span>
+              <span className="text-xs font-medium text-slate-300">Platinum</span>
             </div>
-            <div className="flex items-center gap-1.5 p-2 rounded-md bg-muted/30">
+            <div className="flex items-center gap-1.5 p-2 rounded-md bg-slate-700/50">
               <Medal className="w-3 h-3 text-loyalty-gold" />
-              <span className="text-xs font-medium text-muted-foreground">Gold</span>
+              <span className="text-xs font-medium text-slate-300">Gold</span>
             </div>
-            <div className="flex items-center gap-1.5 p-2 rounded-md bg-muted/30">
+            <div className="flex items-center gap-1.5 p-2 rounded-md bg-slate-700/50">
               <Gem className="w-3 h-3 text-loyalty-silver" />
-              <span className="text-xs font-medium text-muted-foreground">Silver</span>
+              <span className="text-xs font-medium text-slate-300">Silver</span>
             </div>
-            <div className="flex items-center gap-1.5 p-2 rounded-md bg-muted/30">
+            <div className="flex items-center gap-1.5 p-2 rounded-md bg-slate-700/50">
               <Star className="w-3 h-3 text-accent" />
-              <span className="text-xs font-medium text-muted-foreground">Lead</span>
+              <span className="text-xs font-medium text-slate-300">Lead</span>
             </div>
           </div>
         </div>
@@ -217,7 +272,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       {/* Main content */}
       <div className="lg:pl-64">
         {/* Top header */}
-        <header className="bg-gradient-to-r from-card to-water-mist border-b border-border px-6 py-4 shadow-sm">
+        <header className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200 px-6 py-4 shadow-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Button
@@ -239,7 +294,8 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
             <div className="flex items-center gap-4">
               <Badge className="bg-gradient-to-r from-success to-success/80 text-white shadow-success animate-pulse-glow">
-                🟢 Live System
+                <div className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></div>
+                Live System
               </Badge>
               
               <DropdownMenu>

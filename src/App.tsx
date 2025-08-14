@@ -19,6 +19,17 @@ import AdminLogin from "./pages/admin/Login";
 import AdminProfile from "./pages/admin/Profile";
 import AdminSettings from "./pages/admin/Settings";
 import AIIntegration from "./pages/admin/AIIntegration";
+import BillingIntegration from "./pages/admin/BillingIntegration";
+import InfluencerLevels from "./pages/admin/InfluencerLevels";
+import LoyaltyLevels from "./pages/admin/LoyaltyLevels";
+import ClientPoints from "./pages/admin/ClientPoints";
+import PurchaseHistory from "./pages/admin/PurchaseHistory";
+import NetworkSwitching from "./pages/admin/NetworkSwitching";
+import PurchaseEntry from "./pages/admin/PurchaseEntry";
+import BankDetails from "./pages/admin/BankDetails";
+import CommissionRequest from "./pages/admin/CommissionRequest";
+import AIInsights from "./pages/admin/AIInsights";
+
 
 
 const queryClient = new QueryClient();
@@ -44,6 +55,17 @@ const App = () => (
           <Route path="/admin/profile" element={<AdminLayout><AdminProfile /></AdminLayout>} />
           <Route path="/admin/settings" element={<AdminLayout><AdminSettings /></AdminLayout>} />
           <Route path="/admin/ai-integration" element={<AdminLayout><AIIntegration /></AdminLayout>} />
+          <Route path="/admin/billing-integration" element={<AdminLayout><BillingIntegration /></AdminLayout>} />
+          <Route path="/admin/influencer-levels" element={<AdminLayout><InfluencerLevels /></AdminLayout>} />
+          <Route path="/admin/loyalty-levels" element={<AdminLayout><LoyaltyLevels /></AdminLayout>} />
+          <Route path="/admin/client-points" element={<AdminLayout><ClientPoints /></AdminLayout>} />
+          <Route path="/admin/purchase-history" element={<AdminLayout><PurchaseHistory /></AdminLayout>} />
+          <Route path="/admin/network-switching" element={<AdminLayout><NetworkSwitching /></AdminLayout>} />
+          <Route path="/admin/purchase-entry" element={<AdminLayout><PurchaseEntry /></AdminLayout>} />
+          <Route path="/admin/bank-details" element={<AdminLayout><BankDetails /></AdminLayout>} />
+          <Route path="/admin/commission-request" element={<AdminLayout><CommissionRequest /></AdminLayout>} />
+          <Route path="/admin/ai-insights" element={<AdminLayout><AIInsights /></AdminLayout>} />
+
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

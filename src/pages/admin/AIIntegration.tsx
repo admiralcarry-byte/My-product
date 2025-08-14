@@ -33,6 +33,13 @@ import {
   Crown,
   Medal,
   Gem,
+  PartyPopper,
+  Droplets,
+  Heart,
+  Handshake,
+  Sun,
+  Beach,
+  Gift,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -51,18 +58,17 @@ const AIIntegration = () => {
     // Simulate AI generation delay
     setTimeout(() => {
       const promotionalTexts = {
-        all: "🌊 Stay hydrated with ÁGUA TWEZAH! Premium water delivery with exclusive rewards. Join thousands of satisfied customers today! #HydrationGoals #ÁguaTwezah",
-        lead: "🌟 Welcome to ÁGUA TWEZAH! Start your hydration journey with us and earn rewards from your very first purchase. Pure water, pure rewards! 💧",
-        silver: "💎 Silver members enjoy enhanced rewards! Your loyalty to ÁGUA TWEZAH brings you closer to premium benefits. Keep hydrating, keep earning! ⭐",
-        gold: "🏆 Gold tier excellence! Enjoy premium rewards and exclusive offers. Your dedication to quality hydration deserves the best with ÁGUA TWEZAH! ✨",
-        platinum: "👑 Platinum VIP Experience! Unlock maximum benefits with ÁGUA TWEZAH's highest tier. Premium water, premium rewards, premium service! 🌟"
+        all: "Stay hydrated with ÁGUA TWEZAH! Premium water delivery with exclusive rewards. Join thousands of satisfied customers today! #HydrationGoals #ÁguaTwezah",
+        new: "Welcome to ÁGUA TWEZAH! Start your hydration journey with us and earn rewards from your very first purchase. Pure water, pure rewards!",
+        active: "Our valued customers! Keep enjoying premium water and exclusive rewards. Your loyalty brings you closer to amazing benefits!",
+        influencers: "Build your network with ÁGUA TWEZAH! Help others discover quality water and earn rewards for every referral. Grow together!"
       };
 
       const campaignTexts = {
-        promotional: "🎉 Special Offer Alert! Get 20% extra cashback on your next ÁGUA TWEZAH order. Limited time only - Pure hydration, pure savings! 💧✨",
-        seasonal: "☀️ Summer Hydration Challenge! Beat the heat with ÁGUA TWEZAH. Double rewards all season long. Stay cool, stay hydrated! 🏖️",
-        loyalty: "🎊 Celebrating Our Amazing Customers! Special loyalty bonus for all ÁGUA TWEZAH family members. Your trust, our commitment! 💙",
-        referral: "👥 Share the Love! Refer friends to ÁGUA TWEZAH and earn incredible bonuses. Pure water for everyone! 🤝💧"
+        promotional: "Special Offer Alert! Get 20% extra cashback on your next ÁGUA TWEZAH order. Limited time only - Pure hydration, pure savings!",
+        seasonal: "Summer Hydration Challenge! Beat the heat with ÁGUA TWEZAH. Double rewards all season long. Stay cool, stay hydrated!",
+        loyalty: "Celebrating Our Amazing Customers! Special loyalty bonus for all ÁGUA TWEZAH family members. Your trust, our commitment!",
+        referral: "Share the Love! Refer friends to ÁGUA TWEZAH and earn incredible bonuses. Pure water for everyone!"
       };
 
       let text = "";
@@ -76,9 +82,9 @@ const AIIntegration = () => {
       setIsGenerating(false);
       
       toast({
-        title: "Content Generated!",
-        description: "Your promotional text has been created successfully.",
-        variant: "default",
+        title: "Content Generated Successfully!",
+        description: "Your AI-powered promotional content is ready to use",
+        variant: "success",
       });
     }, 2000);
   };
@@ -87,8 +93,8 @@ const AIIntegration = () => {
     if (!faqTopic) {
       toast({
         title: "Topic Required",
-        description: "Please enter a topic for FAQ generation.",
-        variant: "destructive",
+        description: "Please enter a topic to generate helpful FAQ content",
+        variant: "warning",
       });
       return;
     }
@@ -168,8 +174,8 @@ const AIIntegration = () => {
       
       toast({
         title: "Smart FAQ Generated!",
-        description: `Generated ${faqs.length} FAQ items for "${faqTopic}".`,
-        variant: "default",
+        description: `Successfully created ${faqs.length} helpful FAQ items for "${faqTopic}"`,
+        variant: "success",
       });
     }, 2000);
   };
@@ -177,9 +183,9 @@ const AIIntegration = () => {
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
     toast({
-      title: "Copied!",
-      description: "Content copied to clipboard.",
-      variant: "default",
+      title: "Copied to Clipboard!",
+      description: "Content has been copied and is ready to paste",
+      variant: "info",
     });
   };
 
@@ -295,35 +301,37 @@ const AIIntegration = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label>Target Audience</Label>
+                    <Label className="flex items-center gap-2">
+                      <Target className="w-4 h-4 text-primary" />
+                      Target Audience
+                    </Label>
                     <Select value={selectedTier} onValueChange={setSelectedTier}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">All Customers</SelectItem>
-                        <SelectItem value="lead">
+                        <SelectItem value="all">
                           <div className="flex items-center gap-2">
-                            <Star className="w-4 h-4 text-accent" />
-                            Lead Tier
+                            <Users className="w-4 h-4" />
+                            All Customers
                           </div>
                         </SelectItem>
-                        <SelectItem value="silver">
+                        <SelectItem value="new">
                           <div className="flex items-center gap-2">
-                            <Gem className="w-4 h-4 text-loyalty-silver" />
-                            Silver Tier
+                            <Star className="w-4 h-4" />
+                            New Customers
                           </div>
                         </SelectItem>
-                        <SelectItem value="gold">
+                        <SelectItem value="active">
                           <div className="flex items-center gap-2">
-                            <Medal className="w-4 h-4 text-loyalty-gold" />
-                            Gold Tier
+                            <Heart className="w-4 h-4" />
+                            Active Customers
                           </div>
                         </SelectItem>
-                        <SelectItem value="platinum">
+                        <SelectItem value="influencers">
                           <div className="flex items-center gap-2">
-                            <Crown className="w-4 h-4 text-loyalty-platinum" />
-                            Platinum Tier
+                            <TrendingUp className="w-4 h-4" />
+                            Influencers
                           </div>
                         </SelectItem>
                       </SelectContent>
@@ -331,16 +339,39 @@ const AIIntegration = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Campaign Type</Label>
+                    <Label className="flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-accent" />
+                      Campaign Type
+                    </Label>
                     <Select value={selectedCampaignType} onValueChange={setSelectedCampaignType}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="promotional">Promotional Offer</SelectItem>
-                        <SelectItem value="seasonal">Seasonal Campaign</SelectItem>
-                        <SelectItem value="loyalty">Loyalty Program</SelectItem>
-                        <SelectItem value="referral">Referral Campaign</SelectItem>
+                        <SelectItem value="promotional">
+                          <div className="flex items-center gap-2">
+                            <PartyPopper className="w-4 h-4" />
+                            Promotional Offer
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="seasonal">
+                          <div className="flex items-center gap-2">
+                            <Sun className="w-4 h-4" />
+                            Seasonal Campaign
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="loyalty">
+                          <div className="flex items-center gap-2">
+                            <Heart className="w-4 h-4" />
+                            Loyalty Program
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="referral">
+                          <div className="flex items-center gap-2">
+                            <Handshake className="w-4 h-4" />
+                            Referral Campaign
+                          </div>
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -365,7 +396,13 @@ const AIIntegration = () => {
                 </div>
 
                 <div className="space-y-4">
-                  <Label>Generated Content</Label>
+                  <Label className="flex items-center gap-2">
+                    {selectedCampaignType === "promotional" && <PartyPopper className="w-4 h-4 text-purple-600" />}
+                    {selectedCampaignType === "seasonal" && <Sun className="w-4 h-4 text-yellow-600" />}
+                    {selectedCampaignType === "loyalty" && <Heart className="w-4 h-4 text-pink-600" />}
+                    {selectedCampaignType === "referral" && <Handshake className="w-4 h-4 text-blue-600" />}
+                    Generated Content
+                  </Label>
                   <div className="relative">
                     <Textarea
                       value={generatedContent}

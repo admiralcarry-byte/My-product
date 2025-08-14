@@ -366,41 +366,6 @@ const Dashboard = () => {
         </Card>
       </div>
 
-      {/* Quick Actions */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
-          <CardDescription>Common administrative tasks</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Button variant="outline" className="h-20 flex-col gap-2" asChild>
-              <Link to="/admin/users">
-                <Users className="w-6 h-6" />
-                <span>Add User</span>
-              </Link>
-            </Button>
-            <Button variant="outline" className="h-20 flex-col gap-2" asChild>
-              <Link to="/admin/sales">
-                <Droplets className="w-6 h-6" />
-                <span>Record Sale</span>
-              </Link>
-            </Button>
-            <Button variant="outline" className="h-20 flex-col gap-2" asChild>
-              <Link to="/admin/commission">
-                <DollarSign className="w-6 h-6" />
-                <span>Process Payment</span>
-              </Link>
-            </Button>
-            <Button variant="outline" className="h-20 flex-col gap-2" asChild>
-              <Link to="/admin/reports">
-                <TrendingUp className="w-6 h-6" />
-                <span>View Analytics</span>
-              </Link>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 };

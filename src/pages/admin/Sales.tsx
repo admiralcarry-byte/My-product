@@ -45,6 +45,9 @@ import {
   CheckCircle,
   XCircle,
   MoreHorizontal,
+  TrendingUp,
+  BarChart3,
+  Activity,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -200,40 +203,42 @@ const Sales = () => {
         </div>
       </TableCell>
       <TableCell>
-        <div className="flex items-center gap-1">
-          <DollarSign className="w-4 h-4 text-muted-foreground" />
-          ${sale.amount.toFixed(2)}
+        <div className="flex items-center gap-1 font-medium text-green-600">
+          <DollarSign className="w-4 h-4" />
+          {sale.amount.toFixed(2)}
         </div>
       </TableCell>
       <TableCell>
-        <div className="flex items-center gap-1 text-success">
-          <DollarSign className="w-4 h-4" />
-          ${sale.cashback.toFixed(2)}
+        <div className="flex items-center gap-1 text-sm">
+          <DollarSign className="w-4 h-4 text-primary" />
+          {sale.cashback.toFixed(2)}
         </div>
+      </TableCell>
+      <TableCell>
+        <div className="flex items-center gap-1 text-sm">
+          <DollarSign className="w-4 h-4 text-accent" />
+          {sale.commission.toFixed(2)}
+        </div>
+      </TableCell>
+      <TableCell>
+        <div className="flex items-center gap-1 text-sm">
+          <Calendar className="w-3 h-3 text-muted-foreground" />
+          {sale.date}
+        </div>
+        <div className="text-muted-foreground">{sale.time}</div>
       </TableCell>
       <TableCell>
         <div className="text-sm">
-          <div className="flex items-center gap-1">
-            <Calendar className="w-3 h-3 text-muted-foreground" />
-            {sale.date}
-          </div>
-          <div className="text-muted-foreground">{sale.time}</div>
+          <div className="font-medium">{sale.location}</div>
+          {sale.influencer && (
+            <div className="text-muted-foreground">{sale.influencer}</div>
+          )}
         </div>
       </TableCell>
       <TableCell>
-        <div className="text-sm text-muted-foreground">{sale.location}</div>
-      </TableCell>
-      <TableCell>
-        <Badge 
-          variant={getStatusBadgeVariant(sale.status)} 
-          className={`flex items-center gap-1 w-fit ${
-            sale.status === 'verified' ? 'bg-success text-success-foreground' :
-            sale.status === 'rejected' ? 'bg-destructive text-destructive-foreground' : 
-            'bg-warning text-warning-foreground'
-          }`}
-        >
+        <Badge variant={getStatusBadgeVariant(sale.status)} className="flex items-center gap-1">
           {getStatusIcon(sale.status)}
-          {sale.status.charAt(0).toUpperCase() + sale.status.slice(1)}
+          {sale.status}
         </Badge>
       </TableCell>
       <TableCell>
@@ -251,14 +256,13 @@ const Sales = () => {
             </DropdownMenuItem>
             {sale.status === "pending" && (
               <>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-success">
+                <DropdownMenuItem>
                   <Check className="mr-2 h-4 w-4" />
-                  Verify Sale
+                  Verify
                 </DropdownMenuItem>
-                <DropdownMenuItem className="text-destructive">
+                <DropdownMenuItem>
                   <X className="mr-2 h-4 w-4" />
-                  Reject Sale
+                  Reject
                 </DropdownMenuItem>
               </>
             )}
@@ -269,286 +273,168 @@ const Sales = () => {
   );
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 animate-fade-in">
+      {/* Enhanced Header Section */}
+      <div className="flex items-center justify-between p-6 rounded-xl bg-gradient-to-r from-white to-slate-50 border border-slate-200 shadow-sm">
         <div>
-          <h1 className="text-3xl font-bold">Sales Management</h1>
-          <p className="text-muted-foreground">Track and verify water purchases</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-water-blue bg-clip-text text-transparent">
+            Sales Management
+          </h1>
+          <p className="text-muted-foreground mt-1">Monitor and manage all sales transactions and revenue</p>
         </div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              Add Sale
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[500px] bg-gradient-to-br from-card to-water-mist/30 border-0 shadow-xl">
-            <DialogHeader>
-              <DialogTitle>Record New Sale</DialogTitle>
-              <DialogDescription>
-                Manually add a water purchase transaction.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="customer" className="text-right">Customer</Label>
-                <Select>
-                  <SelectTrigger className="col-span-3">
-                    <SelectValue placeholder="Select customer" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="maria">Maria Silva (+244 923 456 789)</SelectItem>
-                    <SelectItem value="joao">João Santos (+244 934 567 890)</SelectItem>
-                    <SelectItem value="ana">Ana Costa (+244 945 678 901)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="liters" className="text-right">Liters</Label>
-                <Input id="liters" type="number" placeholder="25" className="col-span-3" />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="location" className="text-right">Location</Label>
-                <Input id="location" placeholder="Luanda Centro" className="col-span-3" />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="date" className="text-right">Date</Label>
-                <Input id="date" type="date" className="col-span-3" />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button type="submit">Record Sale</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <div className="flex items-center gap-2">
+          <Badge className="bg-gradient-to-r from-success to-success/80 text-white shadow-success animate-pulse-glow">
+            <Activity className="w-4 h-4 mr-1" />
+            Live Tracking
+          </Badge>
+        </div>
       </div>
 
-      {/* Stats Cards */}
+      {/* Enhanced Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="bg-gradient-to-br from-white to-primary/5 border-0 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">
+        <Card className="bg-gradient-to-br from-white to-green-50 border-0 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Sales</CardTitle>
-            <div className="p-2 rounded-lg bg-gradient-to-br from-primary to-primary/80">
-              <ShoppingCart className="h-4 w-4 text-white" />
+            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <div className="p-2 rounded-lg bg-gradient-to-br from-green-500 to-green-600">
+              <DollarSign className="h-4 w-4 text-white" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">{sales.length}</div>
+            <div className="text-2xl font-bold text-green-600">${totalRevenue.toFixed(2)}</div>
             <div className="flex items-center text-xs text-success font-medium">
-              <span>{pendingSales.length} pending verification</span>
+              <TrendingUp className="w-3 h-3 mr-1" />
+              +12% this month
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-white to-water-light/20 border-0 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">
+        <Card className="bg-gradient-to-br from-white to-blue-50 border-0 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Liters</CardTitle>
-            <div className="p-2 rounded-lg bg-gradient-to-br from-water-blue to-water-deep">
+            <CardTitle className="text-sm font-medium">Total Water Sold</CardTitle>
+            <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600">
               <Droplets className="h-4 w-4 text-white" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-water-blue">{totalLiters}L</div>
+            <div className="text-2xl font-bold text-blue-600">{totalLiters}L</div>
             <div className="flex items-center text-xs text-success font-medium">
-              <span>Water sold this period</span>
+              <BarChart3 className="w-3 h-3 mr-1" />
+              +8% this week
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-white to-success/10 border-0 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">
+        <Card className="bg-gradient-to-br from-white to-purple-50 border-0 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Revenue</CardTitle>
-            <div className="p-2 rounded-lg bg-gradient-to-br from-success to-success/80">
+            <CardTitle className="text-sm font-medium">Total Cashback</CardTitle>
+            <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600">
               <DollarSign className="h-4 w-4 text-white" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-success">${totalRevenue.toFixed(2)}</div>
+            <div className="text-2xl font-bold text-purple-600">${totalCashback.toFixed(2)}</div>
             <div className="flex items-center text-xs text-success font-medium">
-              <span>Total sales revenue</span>
+              <TrendingUp className="w-3 h-3 mr-1" />
+              +15% this month
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-white to-accent/10 border-0 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">
+        <Card className="bg-gradient-to-br from-white to-orange-50 border-0 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Cashback Paid</CardTitle>
-            <div className="p-2 rounded-lg bg-gradient-to-br from-accent to-accent/80">
-              <DollarSign className="h-4 w-4 text-white" />
+            <CardTitle className="text-sm font-medium">Total Commission</CardTitle>
+            <div className="p-2 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600">
+              <Users className="h-4 w-4 text-white" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-accent">${totalCashback.toFixed(2)}</div>
+            <div className="text-2xl font-bold text-orange-600">${totalCommission.toFixed(2)}</div>
             <div className="flex items-center text-xs text-success font-medium">
-              <span>Customer rewards</span>
+              <TrendingUp className="w-3 h-3 mr-1" />
+              +22% this month
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Pending Verification Alert */}
-      {pendingSales.length > 0 && (
-        <Card className="border-warning bg-warning/5">
-          <CardContent className="flex items-center gap-3 pt-6">
-            <AlertCircle className="w-5 h-5 text-warning" />
-            <div>
-              <p className="font-medium">Pending Verification</p>
-              <p className="text-sm text-muted-foreground">
-                {pendingSales.length} sales require verification
-              </p>
-            </div>
-            <Button variant="outline" className="ml-auto">
-              Review Now
-            </Button>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Sales Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Sales Transactions</CardTitle>
-          <CardDescription>View and manage all water purchase transactions</CardDescription>
+      {/* Enhanced Filters and Search */}
+      <Card className="border-0 shadow-lg">
+        <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
+          <CardTitle className="flex items-center gap-2">
+            <Search className="w-5 h-5 text-primary" />
+            Search & Filters
+          </CardTitle>
+          <CardDescription>Find specific sales transactions</CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="flex gap-4 mb-6">
-            <div className="flex-1">
+        <CardContent className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="search">Search Sales</Label>
               <div className="relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                 <Input
+                  id="search"
                   placeholder="Search by customer, phone, or location..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 bg-gradient-to-r from-slate-50 to-white"
                 />
               </div>
             </div>
-            <Select value={filterStatus} onValueChange={setFilterStatus}>
-              <SelectTrigger className="w-[150px]">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="verified">Verified</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="space-y-2">
+              <Label htmlFor="status">Status Filter</Label>
+              <Select value={filterStatus} onValueChange={setFilterStatus}>
+                <SelectTrigger className="bg-gradient-to-r from-slate-50 to-white">
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="verified">Verified</SelectItem>
+                  <SelectItem value="rejected">Rejected</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex items-end">
+              <Button className="w-full bg-gradient-to-r from-primary to-water-blue hover:shadow-primary shadow-md">
+                <Plus className="w-4 h-4 mr-2" />
+                Add Sale
+              </Button>
+            </div>
           </div>
+        </CardContent>
+      </Card>
 
-          <Tabs defaultValue="all" className="w-full">
-            <TabsList>
-              <TabsTrigger value="all">All Sales ({filteredSales.length})</TabsTrigger>
-              <TabsTrigger value="pending">
-                Pending ({pendingSales.length})
-                {pendingSales.length > 0 && (
-                  <Badge variant="secondary" className="ml-2">
-                    {pendingSales.length}
-                  </Badge>
-                )}
-              </TabsTrigger>
-              <TabsTrigger value="verified">Verified ({verifiedSales.length})</TabsTrigger>
-              <TabsTrigger value="rejected">Rejected ({rejectedSales.length})</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="all" className="space-y-4">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Customer</TableHead>
-                    <TableHead>Liters</TableHead>
-                    <TableHead>Amount</TableHead>
-                    <TableHead>Cashback</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Location</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredSales.map((sale) => (
-                    <SaleRow key={sale.id} sale={sale} />
-                  ))}
-                </TableBody>
-              </Table>
-            </TabsContent>
-            
-            <TabsContent value="pending" className="space-y-4">
-              <div className="bg-warning/10 border border-warning/20 rounded-lg p-4 mb-4">
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-warning" />
-                  <p className="text-sm font-medium">Verification Required</p>
-                </div>
-                <p className="text-sm text-muted-foreground mt-1">
-                  These sales are waiting for admin verification. Review each transaction carefully.
-                </p>
-              </div>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Customer</TableHead>
-                    <TableHead>Liters</TableHead>
-                    <TableHead>Amount</TableHead>
-                    <TableHead>Cashback</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Location</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {pendingSales.map((sale) => (
-                    <SaleRow key={sale.id} sale={sale} />
-                  ))}
-                </TableBody>
-              </Table>
-            </TabsContent>
-            
-            <TabsContent value="verified" className="space-y-4">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Customer</TableHead>
-                    <TableHead>Liters</TableHead>
-                    <TableHead>Amount</TableHead>
-                    <TableHead>Cashback</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Location</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {verifiedSales.map((sale) => (
-                    <SaleRow key={sale.id} sale={sale} />
-                  ))}
-                </TableBody>
-              </Table>
-            </TabsContent>
-            
-            <TabsContent value="rejected" className="space-y-4">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Customer</TableHead>
-                    <TableHead>Liters</TableHead>
-                    <TableHead>Amount</TableHead>
-                    <TableHead>Cashback</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Location</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {rejectedSales.map((sale) => (
-                    <SaleRow key={sale.id} sale={sale} />
-                  ))}
-                </TableBody>
-              </Table>
-            </TabsContent>
-          </Tabs>
+      {/* Enhanced Sales Table */}
+      <Card className="border-0 shadow-lg">
+        <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
+          <CardTitle className="flex items-center gap-2">
+            <ShoppingCart className="w-5 h-5 text-primary" />
+            Sales Transactions
+          </CardTitle>
+          <CardDescription>All sales with detailed information and status</CardDescription>
+        </CardHeader>
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-slate-50/50">
+                <TableHead className="font-semibold">Customer</TableHead>
+                <TableHead className="font-semibold">Water</TableHead>
+                <TableHead className="font-semibold">Amount</TableHead>
+                <TableHead className="font-semibold">Cashback</TableHead>
+                <TableHead className="font-semibold">Commission</TableHead>
+                <TableHead className="font-semibold">Date/Time</TableHead>
+                <TableHead className="font-semibold">Location</TableHead>
+                <TableHead className="font-semibold">Status</TableHead>
+                <TableHead className="font-semibold">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredSales.map((sale) => (
+                <SaleRow key={sale.id} sale={sale} />
+              ))}
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
     </div>
