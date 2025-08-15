@@ -39,7 +39,8 @@ import {
   Mail,
   Star,
   Search,
-  Droplets
+  Droplets,
+  Store
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -207,11 +208,11 @@ const Stores = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "active":
-        return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Active</Badge>;
+        return <Badge className="bg-green-100 text-green-800 hover:bg-green-100 border-green-200">Active</Badge>;
       case "inactive":
         return <Badge variant="secondary">Inactive</Badge>;
       case "maintenance":
-        return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">Maintenance</Badge>;
+        return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100 border-yellow-200">Maintenance</Badge>;
       default:
         return <Badge variant="secondary">{status}</Badge>;
     }
@@ -220,34 +221,36 @@ const Stores = () => {
   const getTypeBadge = (type: string) => {
     switch (type) {
       case "retail":
-        return <Badge variant="outline">Retail</Badge>;
+        return <Badge variant="outline" className="border-primary/20 text-primary">Retail</Badge>;
       case "wholesale":
-        return <Badge variant="outline">Wholesale</Badge>;
+        return <Badge variant="outline" className="border-accent/20 text-accent">Wholesale</Badge>;
       case "both":
-        return <Badge variant="outline">Both</Badge>;
+        return <Badge variant="outline" className="border-water-blue/20 text-water-blue">Both</Badge>;
       default:
         return <Badge variant="outline">{type}</Badge>;
     }
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 animate-fade-in">
+      {/* Enhanced Header with Gradient */}
+      <div className="flex items-center justify-between p-6 rounded-xl bg-gradient-to-r from-white to-water-mist border border-border shadow-sm">
         <div>
-          <h1 className="text-3xl font-bold">Store Management</h1>
-          <p className="text-muted-foreground">Manage all store locations and their information</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-water-blue bg-clip-text text-transparent">
+            Store Management
+          </h1>
+          <p className="text-muted-foreground mt-1">Manage all store locations and their information across Angola</p>
         </div>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
-            <Button>
+            <Button className="bg-gradient-to-r from-primary to-water-blue hover:from-primary/90 hover:to-water-blue/90 shadow-lg hover:shadow-xl transition-all duration-200">
               <Plus className="w-4 h-4 mr-2" />
               Add New Store
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[600px]">
             <DialogHeader>
-              <DialogTitle>Add New Store</DialogTitle>
+              <DialogTitle className="text-xl font-semibold">Add New Store</DialogTitle>
               <DialogDescription>
                 Add a new store location to the system with complete information.
               </DialogDescription>
@@ -255,18 +258,19 @@ const Stores = () => {
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="storeName">Store Name *</Label>
+                  <Label htmlFor="storeName" className="text-sm font-medium">Store Name *</Label>
                   <Input
                     id="storeName"
                     placeholder="Enter store name"
                     value={newStore.name}
                     onChange={(e) => setNewStore({...newStore, name: e.target.value})}
+                    className="border-border focus:ring-2 focus:ring-primary/20"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="storeCity">City *</Label>
+                  <Label htmlFor="storeCity" className="text-sm font-medium">City *</Label>
                   <Select value={newStore.city} onValueChange={(value) => setNewStore({...newStore, city: value})}>
-                    <SelectTrigger>
+                    <SelectTrigger className="border-border focus:ring-2 focus:ring-primary/20">
                       <SelectValue placeholder="Select city" />
                     </SelectTrigger>
                     <SelectContent>
@@ -279,53 +283,57 @@ const Stores = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="storeAddress">Address *</Label>
+                <Label htmlFor="storeAddress" className="text-sm font-medium">Address *</Label>
                 <Textarea
                   id="storeAddress"
                   placeholder="Enter complete store address"
                   value={newStore.address}
                   onChange={(e) => setNewStore({...newStore, address: e.target.value})}
                   rows={2}
+                  className="border-border focus:ring-2 focus:ring-primary/20"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="storePhone">Phone *</Label>
+                  <Label htmlFor="storePhone" className="text-sm font-medium">Phone *</Label>
                   <Input
                     id="storePhone"
                     placeholder="+244 XXX XXX XXX"
                     value={newStore.phone}
                     onChange={(e) => setNewStore({...newStore, phone: e.target.value})}
+                    className="border-border focus:ring-2 focus:ring-primary/20"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="storeEmail">Email *</Label>
+                  <Label htmlFor="storeEmail" className="text-sm font-medium">Email *</Label>
                   <Input
                     id="storeEmail"
                     type="email"
                     placeholder="store@aguatwezah.ao"
                     value={newStore.email}
                     onChange={(e) => setNewStore({...newStore, email: e.target.value})}
+                    className="border-border focus:ring-2 focus:ring-primary/20"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="storeWebsite">Website</Label>
+                <Label htmlFor="storeWebsite" className="text-sm font-medium">Website</Label>
                 <Input
                   id="storeWebsite"
                   placeholder="https://aguatwezah.ao/store"
                   value={newStore.website}
                   onChange={(e) => setNewStore({...newStore, website: e.target.value})}
+                  className="border-border focus:ring-2 focus:ring-primary/20"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="storeType">Store Type</Label>
+                  <Label htmlFor="storeType" className="text-sm font-medium">Store Type</Label>
                   <Select value={newStore.type} onValueChange={(value: "retail" | "wholesale" | "both") => setNewStore({...newStore, type: value})}>
-                    <SelectTrigger>
+                    <SelectTrigger className="border-border focus:ring-2 focus:ring-primary/20">
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                     <SelectContent>
@@ -336,34 +344,37 @@ const Stores = () => {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="storeCapacity">Capacity (L)</Label>
+                  <Label htmlFor="storeCapacity" className="text-sm font-medium">Capacity (L)</Label>
                   <Input
                     id="storeCapacity"
                     type="number"
                     placeholder="5000"
                     value={newStore.capacity}
                     onChange={(e) => setNewStore({...newStore, capacity: parseInt(e.target.value) || 0})}
+                    className="border-border focus:ring-2 focus:ring-primary/20"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="storeHours">Opening Hours</Label>
+                <Label htmlFor="storeHours" className="text-sm font-medium">Opening Hours</Label>
                 <Input
                   id="storeHours"
                   placeholder="Mon-Sat: 8:00-20:00, Sun: 9:00-18:00"
                   value={newStore.openingHours}
                   onChange={(e) => setNewStore({...newStore, openingHours: e.target.value})}
+                  className="border-border focus:ring-2 focus:ring-primary/20"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="storeManager">Store Manager</Label>
+                <Label htmlFor="storeManager" className="text-sm font-medium">Store Manager</Label>
                 <Input
                   id="storeManager"
                   placeholder="Manager name"
                   value={newStore.manager}
                   onChange={(e) => setNewStore({...newStore, manager: e.target.value})}
+                  className="border-border focus:ring-2 focus:ring-primary/20"
                 />
               </div>
             </div>
@@ -371,7 +382,7 @@ const Stores = () => {
               <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
                 Cancel
               </Button>
-              <Button onClick={handleAddStore}>
+              <Button onClick={handleAddStore} className="bg-gradient-to-r from-primary to-water-blue hover:from-primary/90 hover:to-water-blue/90">
                 <Plus className="w-4 h-4 mr-2" />
                 Add Store
               </Button>
@@ -380,28 +391,32 @@ const Stores = () => {
         </Dialog>
       </div>
 
-      {/* Stats Cards */}
+      {/* Enhanced Stats Cards with Gradients */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card>
+        <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-sm bg-gradient-to-br from-white to-water-mist">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Stores</CardTitle>
-            <Building2 className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-muted-foreground">Total Stores</CardTitle>
+            <div className="p-2 rounded-lg bg-gradient-to-r from-primary/10 to-water-blue/10">
+              <Building2 className="h-4 w-4 text-primary" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stores.length}</div>
+            <div className="text-2xl font-bold text-foreground">{stores.length}</div>
             <p className="text-xs text-muted-foreground">
               Store locations
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-sm bg-gradient-to-br from-white to-green-50">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Stores</CardTitle>
-            <Star className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-muted-foreground">Active Stores</CardTitle>
+            <div className="p-2 rounded-lg bg-gradient-to-r from-green-500/10 to-emerald-500/10">
+              <Star className="h-4 w-4 text-green-600" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-foreground">
               {stores.filter(store => store.status === 'active').length}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -410,13 +425,15 @@ const Stores = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-sm bg-gradient-to-br from-white to-blue-50">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Cities Covered</CardTitle>
-            <MapPin className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-muted-foreground">Cities Covered</CardTitle>
+            <div className="p-2 rounded-lg bg-gradient-to-r from-blue-500/10 to-cyan-500/10">
+              <MapPin className="h-4 w-4 text-blue-600" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-foreground">
               {new Set(stores.map(store => store.city)).size}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -425,13 +442,15 @@ const Stores = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="hover:shadow-lg transition-all duration-200 border-0 shadow-sm bg-gradient-to-br from-white to-cyan-50">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Capacity</CardTitle>
-            <Droplets className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-muted-foreground">Total Capacity</CardTitle>
+            <div className="p-2 rounded-lg bg-gradient-to-r from-cyan-500/10 to-teal-500/10">
+              <Droplets className="h-4 w-4 text-cyan-600" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-foreground">
               {stores.reduce((sum, store) => sum + store.capacity, 0).toLocaleString()}L
             </div>
             <p className="text-xs text-muted-foreground">
@@ -441,10 +460,13 @@ const Stores = () => {
         </Card>
       </div>
 
-      {/* Search */}
-      <Card>
+      {/* Enhanced Search Card */}
+      <Card className="border-0 shadow-sm bg-gradient-to-r from-white to-water-mist/30">
         <CardHeader>
-          <CardTitle>Search Stores</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <Search className="w-5 h-5 text-primary" />
+            Search Stores
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="relative">
@@ -453,46 +475,49 @@ const Stores = () => {
               placeholder="Search stores by name, address, or manager..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
+              className="pl-10 border-border focus:ring-2 focus:ring-primary/20"
             />
           </div>
         </CardContent>
       </Card>
 
-      {/* Stores Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>All Stores</CardTitle>
+      {/* Enhanced Stores Table */}
+      <Card className="border-0 shadow-sm">
+        <CardHeader className="bg-gradient-to-r from-white to-water-mist/20 rounded-t-lg">
+          <CardTitle className="flex items-center gap-2">
+            <Store className="w-5 h-5 text-primary" />
+            All Stores
+          </CardTitle>
           <CardDescription>Manage store locations and their information</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>Store Name</TableHead>
-                <TableHead>Location</TableHead>
-                <TableHead>Contact</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Capacity</TableHead>
-                <TableHead>Rating</TableHead>
-                <TableHead>Actions</TableHead>
+              <TableRow className="bg-muted/30">
+                <TableHead className="font-semibold">Store Name</TableHead>
+                <TableHead className="font-semibold">Location</TableHead>
+                <TableHead className="font-semibold">Contact</TableHead>
+                <TableHead className="font-semibold">Type</TableHead>
+                <TableHead className="font-semibold">Status</TableHead>
+                <TableHead className="font-semibold">Capacity</TableHead>
+                <TableHead className="font-semibold">Rating</TableHead>
+                <TableHead className="font-semibold">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredStores.map((store) => (
-                <TableRow key={store.id}>
+                <TableRow key={store.id} className="hover:bg-muted/20 transition-colors">
                   <TableCell>
                     <div>
-                      <div className="font-medium">{store.name}</div>
+                      <div className="font-medium text-foreground">{store.name}</div>
                       <div className="text-sm text-muted-foreground">{store.manager}</div>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <MapPin className="w-3 h-3" />
+                      <MapPin className="w-3 h-3 text-primary" />
                       <div>
-                        <div className="font-medium">{store.city}</div>
+                        <div className="font-medium text-foreground">{store.city}</div>
                         <div className="text-sm text-muted-foreground max-w-xs truncate">
                           {store.address}
                         </div>
@@ -502,7 +527,7 @@ const Stores = () => {
                   <TableCell>
                     <div className="space-y-1">
                       <div className="flex items-center gap-1 text-sm">
-                        <Phone className="w-3 h-3" />
+                        <Phone className="w-3 h-3 text-primary" />
                         {store.phone}
                       </div>
                       <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -518,14 +543,14 @@ const Stores = () => {
                     {getStatusBadge(store.status)}
                   </TableCell>
                   <TableCell>
-                    <div className="text-sm">
+                    <div className="text-sm font-medium text-foreground">
                       {store.capacity.toLocaleString()}L
                     </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-1">
                       <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                      <span className="text-sm">{store.rating}</span>
+                      <span className="text-sm font-medium">{store.rating}</span>
                     </div>
                   </TableCell>
                   <TableCell>
@@ -537,6 +562,7 @@ const Stores = () => {
                           setSelectedStore(store);
                           setIsEditDialogOpen(true);
                         }}
+                        className="hover:bg-primary/10 hover:text-primary"
                       >
                         <Edit className="w-4 h-4" />
                       </Button>
@@ -547,6 +573,7 @@ const Stores = () => {
                           setSelectedStore(store);
                           setIsDeleteDialogOpen(true);
                         }}
+                        className="hover:bg-destructive/10 hover:text-destructive"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -559,11 +586,14 @@ const Stores = () => {
         </CardContent>
       </Card>
 
-      {/* Edit Store Dialog */}
+      {/* Enhanced Edit Store Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
-            <DialogTitle>Edit Store</DialogTitle>
+            <DialogTitle className="text-xl font-semibold flex items-center gap-2">
+              <Edit className="w-5 h-5 text-primary" />
+              Edit Store
+            </DialogTitle>
             <DialogDescription>
               Update store information and details.
             </DialogDescription>
@@ -572,17 +602,18 @@ const Stores = () => {
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="editStoreName">Store Name</Label>
+                  <Label htmlFor="editStoreName" className="text-sm font-medium">Store Name</Label>
                   <Input
                     id="editStoreName"
                     value={selectedStore.name}
                     onChange={(e) => setSelectedStore({...selectedStore, name: e.target.value})}
+                    className="border-border focus:ring-2 focus:ring-primary/20"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="editStoreCity">City</Label>
+                  <Label htmlFor="editStoreCity" className="text-sm font-medium">City</Label>
                   <Select value={selectedStore.city} onValueChange={(value) => setSelectedStore({...selectedStore, city: value})}>
-                    <SelectTrigger>
+                    <SelectTrigger className="border-border focus:ring-2 focus:ring-primary/20">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -595,49 +626,53 @@ const Stores = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="editStoreAddress">Address</Label>
+                <Label htmlFor="editStoreAddress" className="text-sm font-medium">Address</Label>
                 <Textarea
                   id="editStoreAddress"
                   value={selectedStore.address}
                   onChange={(e) => setSelectedStore({...selectedStore, address: e.target.value})}
                   rows={2}
+                  className="border-border focus:ring-2 focus:ring-primary/20"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="editStorePhone">Phone</Label>
+                  <Label htmlFor="editStorePhone" className="text-sm font-medium">Phone</Label>
                   <Input
                     id="editStorePhone"
                     value={selectedStore.phone}
                     onChange={(e) => setSelectedStore({...selectedStore, phone: e.target.value})}
+                    className="border-border focus:ring-2 focus:ring-primary/20"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="editStoreEmail">Email</Label>
+                  <Label htmlFor="editStoreEmail" className="text-sm font-medium">Email</Label>
                   <Input
                     id="editStoreEmail"
                     type="email"
                     value={selectedStore.email}
                     onChange={(e) => setSelectedStore({...selectedStore, email: e.target.value})}
+                    className="border-border focus:ring-2 focus:ring-primary/20"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="editStoreWebsite">Website</Label>
+                <Label htmlFor="editStoreWebsite" className="text-sm font-medium">Website</Label>
                 <Input
                   id="editStoreWebsite"
                   value={selectedStore.website || ""}
                   onChange={(e) => setSelectedStore({...selectedStore, website: e.target.value})}
+                  className="border-border focus:ring-2 focus:ring-primary/20"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="editStoreType">Store Type</Label>
+                  <Label htmlFor="editStoreType" className="text-sm font-medium">Store Type</Label>
                   <Select value={selectedStore.type} onValueChange={(value: "retail" | "wholesale" | "both") => setSelectedStore({...selectedStore, type: value})}>
-                    <SelectTrigger>
+                    <SelectTrigger className="border-border focus:ring-2 focus:ring-primary/20">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -648,9 +683,9 @@ const Stores = () => {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="editStoreStatus">Status</Label>
+                  <Label htmlFor="editStoreStatus" className="text-sm font-medium">Status</Label>
                   <Select value={selectedStore.status} onValueChange={(value: "active" | "inactive" | "maintenance") => setSelectedStore({...selectedStore, status: value})}>
-                    <SelectTrigger>
+                    <SelectTrigger className="border-border focus:ring-2 focus:ring-primary/20">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -664,30 +699,33 @@ const Stores = () => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="editStoreCapacity">Capacity (L)</Label>
+                  <Label htmlFor="editStoreCapacity" className="text-sm font-medium">Capacity (L)</Label>
                   <Input
                     id="editStoreCapacity"
                     type="number"
                     value={selectedStore.capacity}
                     onChange={(e) => setSelectedStore({...selectedStore, capacity: parseInt(e.target.value) || 0})}
+                    className="border-border focus:ring-2 focus:ring-primary/20"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="editStoreManager">Store Manager</Label>
+                  <Label htmlFor="editStoreManager" className="text-sm font-medium">Store Manager</Label>
                   <Input
                     id="editStoreManager"
                     value={selectedStore.manager}
                     onChange={(e) => setSelectedStore({...selectedStore, manager: e.target.value})}
+                    className="border-border focus:ring-2 focus:ring-primary/20"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="editStoreHours">Opening Hours</Label>
+                <Label htmlFor="editStoreHours" className="text-sm font-medium">Opening Hours</Label>
                 <Input
                   id="editStoreHours"
                   value={selectedStore.openingHours}
                   onChange={(e) => setSelectedStore({...selectedStore, openingHours: e.target.value})}
+                  className="border-border focus:ring-2 focus:ring-primary/20"
                 />
               </div>
             </div>
@@ -696,7 +734,7 @@ const Stores = () => {
             <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={handleEditStore}>
+            <Button onClick={handleEditStore} className="bg-gradient-to-r from-primary to-water-blue hover:from-primary/90 hover:to-water-blue/90">
               <Edit className="w-4 h-4 mr-2" />
               Update Store
             </Button>
@@ -704,11 +742,14 @@ const Stores = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Delete Confirmation Dialog */}
+      {/* Enhanced Delete Confirmation Dialog */}
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete Store</DialogTitle>
+            <DialogTitle className="text-xl font-semibold flex items-center gap-2">
+              <Trash2 className="w-5 h-5 text-destructive" />
+              Delete Store
+            </DialogTitle>
             <DialogDescription>
               Are you sure you want to delete "{selectedStore?.name}"? This action cannot be undone.
             </DialogDescription>
@@ -717,7 +758,7 @@ const Stores = () => {
             <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
               Cancel
             </Button>
-            <Button variant="destructive" onClick={handleDeleteStore}>
+            <Button variant="destructive" onClick={handleDeleteStore} className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700">
               <Trash2 className="w-4 h-4 mr-2" />
               Delete Store
             </Button>
