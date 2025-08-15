@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,7 +46,8 @@ import {
   Medal,
   Gem,
   Star,
-  Gift
+  Gift,
+  Building2
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -647,59 +649,12 @@ const Campaigns = () => {
               <h2 className="text-2xl font-bold">Store Management</h2>
               <p className="text-muted-foreground">Manage store locations and availability</p>
             </div>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Store
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px]">
-                <DialogHeader>
-                  <DialogTitle>Add New Store</DialogTitle>
-                  <DialogDescription>
-                    Add a new store location to the system.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-            <div className="space-y-2">
-                    <Label htmlFor="storeName">Store Name</Label>
-                    <Input
-                      id="storeName"
-                      placeholder="Enter store name"
-              />
-            </div>
-              <div className="space-y-2">
-                    <Label htmlFor="storeCity">City</Label>
-                    <Select>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select city" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="luanda">Luanda</SelectItem>
-                    <SelectItem value="benguela">Benguela</SelectItem>
-                    <SelectItem value="huambo">Huambo</SelectItem>
-                    <SelectItem value="lobito">Lobito</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                    <Label htmlFor="storeAddress">Address</Label>
-                    <Textarea
-                      id="storeAddress"
-                      placeholder="Enter store address"
-                      rows={3}
-                    />
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button>
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Store
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+            <Link to="/admin/stores">
+              <Button>
+                <Building2 className="w-4 h-4 mr-2" />
+                Manage Stores
+              </Button>
+            </Link>
           </div>
 
           {/* Store Stats */}
@@ -751,64 +706,50 @@ const Campaigns = () => {
           {/* Stores Table */}
           <Card>
             <CardHeader>
-              <CardTitle>All Stores</CardTitle>
-              <CardDescription>Manage store locations and their status</CardDescription>
+              <CardTitle>Store Overview</CardTitle>
+              <CardDescription>Quick view of store locations and their campaign status</CardDescription>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Store Name</TableHead>
-                    <TableHead>City</TableHead>
-                    <TableHead>Address</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Active Campaigns</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {availableShops.map((shop) => (
-                    <TableRow key={shop.id}>
-                      <TableCell>
+              <div className="space-y-4">
+                {availableShops.slice(0, 5).map((shop) => (
+                  <div key={shop.id} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div className="flex items-center gap-4">
+                      <div className="p-2 rounded-lg bg-blue-50">
+                        <Building2 className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <div>
                         <div className="font-medium">{shop.name}</div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
+                        <div className="text-sm text-muted-foreground flex items-center gap-2">
                           <MapPin className="w-3 h-3" />
-                          <span>{shop.city}</span>
+                          {shop.city}
                         </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-sm text-muted-foreground max-w-xs truncate">
-                          {shop.address}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={shop.status === 'active' ? 'default' : 'secondary'}>
-                          {shop.status === 'active' ? 'Active' : 'Inactive'}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-sm">
-                          {campaigns.filter(c => c.shops.includes(shop.id) && c.status === 'active').length} campaigns
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Button variant="ghost" size="sm">
-                            <Edit className="w-4 h-4" />
-              </Button>
-                          <Button variant="ghost" size="sm">
-                            <Trash2 className="w-4 h-4" />
-              </Button>
-            </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-          </CardContent>
-        </Card>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <Badge variant={shop.status === 'active' ? 'default' : 'secondary'}>
+                        {shop.status === 'active' ? 'Active' : 'Inactive'}
+                      </Badge>
+                      <div className="text-sm text-muted-foreground">
+                        {campaigns.filter(c => c.shops.includes(shop.id) && c.status === 'active').length} campaigns
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {availableShops.length > 5 && (
+                  <div className="text-center py-4">
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Showing 5 of {availableShops.length} stores
+                    </p>
+                    <Link to="/admin/stores">
+                      <Button variant="outline">
+                        View All Stores
+                      </Button>
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
 

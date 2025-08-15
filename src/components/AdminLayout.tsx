@@ -42,7 +42,10 @@ import {
   Coins,
   History,
   Plus,
-  Brain
+  Brain,
+  Building2,
+  ChevronDown,
+  ChevronRight
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -51,101 +54,127 @@ interface AdminLayoutProps {
   children: ReactNode;
 }
 
-const navigation = [
-  {
-    name: "Dashboard",
-    href: "/admin",
-    icon: Database,
-  },
-  {
-    name: "User Management",
-    href: "/admin/users",
-    icon: UserCheck,
-  },
-  {
-    name: "Sales Management",
-    href: "/admin/sales",
-    icon: TrendingUp,
-  },
-  {
-    name: "Commission Settings",
-    href: "/admin/commission",
-    icon: Wallet,
-  },
-  {
-    name: "Cashback Settings",
-    href: "/admin/cashback",
-    icon: Gift,
-  },
-  {
-    name: "Reports & Analytics",
-    href: "/admin/reports",
-    icon: FileText,
-  },
-  {
-    name: "Notifications",
-    href: "/admin/notifications",
-    icon: MessageSquare,
-  },
-  {
-    name: "Campaigns",
-    href: "/admin/campaigns",
-    icon: Megaphone,
-  },
-  {
-    name: "Loyalty Levels",
-    href: "/admin/loyalty-levels",
-    icon: Award,
-  },
-  {
-    name: "Client Points",
-    href: "/admin/client-points",
-    icon: Coins,
-  },
-  {
-    name: "Purchase History",
-    href: "/admin/purchase-history",
-    icon: History,
-  },
-  {
-    name: "Network Switching",
-    href: "/admin/network-switching",
-    icon: Network,
-  },
-  {
-    name: "Purchase Entry",
-    href: "/admin/purchase-entry",
-    icon: Plus,
-  },
-  {
-    name: "Bank Details",
-    href: "/admin/bank-details",
-    icon: CreditCard,
-  },
-  {
-    name: "Commission Requests",
-    href: "/admin/commission-request",
-    icon: DollarSign,
-  },
-  {
-    name: "AI Insights",
-    href: "/admin/ai-insights",
-    icon: Brain,
-  },
-  {
-    name: "Billing Integration",
-    href: "/admin/billing-integration",
-    icon: CreditCard,
-  },
-  {
-    name: "Influencer Levels",
-    href: "/admin/influencer-levels",
-    icon: TrendingUp,
-  },
-];
+const navigationGroups = {
+  main: [
+    {
+      name: "Dashboard",
+      href: "/admin",
+      icon: Database,
+    },
+  ],
+  management: [
+    {
+      name: "User Management",
+      href: "/admin/users",
+      icon: UserCheck,
+    },
+    {
+      name: "Sales Management",
+      href: "/admin/sales",
+      icon: TrendingUp,
+    },
+    {
+      name: "Commission Settings",
+      href: "/admin/commission",
+      icon: Wallet,
+    },
+    {
+      name: "Cashback Settings",
+      href: "/admin/cashback",
+      icon: Gift,
+    },
+    {
+      name: "Reports & Analytics",
+      href: "/admin/reports",
+      icon: FileText,
+    },
+    {
+      name: "Notifications",
+      href: "/admin/notifications",
+      icon: MessageSquare,
+    },
+  ],
+  operations: [
+    {
+      name: "Campaigns",
+      href: "/admin/campaigns",
+      icon: Megaphone,
+    },
+    {
+      name: "Stores",
+      href: "/admin/stores",
+      icon: Building2,
+    },
+    {
+      name: "Loyalty Levels",
+      href: "/admin/loyalty-levels",
+      icon: Award,
+    },
+    {
+      name: "Client Points",
+      href: "/admin/client-points",
+      icon: Coins,
+    },
+    {
+      name: "Purchase History",
+      href: "/admin/purchase-history",
+      icon: History,
+    },
+    {
+      name: "Network Switching",
+      href: "/admin/network-switching",
+      icon: Network,
+    },
+    {
+      name: "Purchase Entry",
+      href: "/admin/purchase-entry",
+      icon: Plus,
+    },
+  ],
+  settings: [
+    {
+      name: "Bank Details",
+      href: "/admin/bank-details",
+      icon: CreditCard,
+    },
+    {
+      name: "Commission Requests",
+      href: "/admin/commission-request",
+      icon: DollarSign,
+    },
+    {
+      name: "Billing Integration",
+      href: "/admin/billing-integration",
+      icon: CreditCard,
+    },
+    {
+      name: "Influencer Levels",
+      href: "/admin/influencer-levels",
+      icon: TrendingUp,
+    },
+  ],
+  aiTools: [
+    {
+      name: "AI Analytics",
+      href: "/admin/ai-insights",
+      icon: Brain,
+    },
+    {
+      name: "AI Content Generator",
+      href: "/admin/ai-integration",
+      icon: Zap,
+    },
+  ],
+};
 
 export function AdminLayout({ children }: AdminLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [expandedSections, setExpandedSections] = useState({
+    management: true,
+    operations: false,
+    settings: false,
+    aiTools: false
+  });
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -184,14 +213,14 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         )}
       >
         {/* Sidebar header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-700 bg-slate-800/80 backdrop-blur-sm">
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between p-4 border-b border-slate-700 bg-slate-800/80 backdrop-blur-sm">
+          <div className="flex items-center gap-3">
             <div className="p-2 rounded-xl bg-gradient-to-br from-water-blue to-water-deep shadow-water">
               <Droplets className="w-6 h-6 text-white" />
             </div>
             <div>
               <h1 className="text-lg font-bold text-white">ÁGUA TWEZAH</h1>
-              <p className="text-xs text-slate-300">Admin Panel</p>
+              <p className="text-sm text-slate-300">Admin Panel</p>
             </div>
           </div>
           <Button
@@ -205,15 +234,16 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-2 bg-slate-800/50">
-          {navigation.map((item) => {
+        <nav className="flex-1 p-4 space-y-3 bg-slate-800/50 overflow-y-auto">
+          {/* Main Navigation */}
+          {navigationGroups.main.map((item) => {
             const isActive = location.pathname === item.href;
             return (
               <Link
                 key={item.name}
                 to={item.href}
                 className={cn(
-                  "flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200",
+                  "flex items-center gap-3 px-4 py-3 text-base font-medium rounded-lg transition-all duration-200",
                   isActive
                     ? "bg-gradient-to-r from-primary to-water-blue text-white shadow-primary"
                     : "text-slate-300 hover:text-white hover:bg-slate-700/50 hover:shadow-md hover:scale-105"
@@ -225,45 +255,181 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               </Link>
             );
           })}
+
+          {/* Management Section */}
+          <div className="mt-5">
+            <button
+              onClick={() => setExpandedSections(prev => ({ ...prev, management: !prev.management }))}
+              className="flex items-center justify-between w-full px-4 py-3 text-base font-semibold text-slate-300 hover:text-white transition-colors"
+            >
+              <span>Management</span>
+              {expandedSections.management ? (
+                <ChevronDown className="w-5 h-5" />
+              ) : (
+                <ChevronRight className="w-5 h-5" />
+              )}
+            </button>
+            {expandedSections.management && (
+              <div className="ml-4 space-y-3">
+                {navigationGroups.management.map((item) => {
+                  const isActive = location.pathname === item.href;
+                  return (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className={cn(
+                        "flex items-center gap-3 px-4 py-3 text-base font-medium rounded-lg transition-all duration-200",
+                        isActive
+                          ? "bg-gradient-to-r from-primary to-water-blue text-white shadow-primary"
+                          : "text-slate-300 hover:text-white hover:bg-slate-700/50 hover:shadow-md hover:scale-105"
+                      )}
+                      onClick={() => setSidebarOpen(false)}
+                    >
+                      <item.icon className="w-5 h-5" />
+                      {item.name}
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Operations Section */}
+          <div className="mt-5">
+            <button
+              onClick={() => setExpandedSections(prev => ({ ...prev, operations: !prev.operations }))}
+              className="flex items-center justify-between w-full px-4 py-3 text-base font-semibold text-slate-300 hover:text-white transition-colors"
+            >
+              <span>Operations</span>
+              {expandedSections.operations ? (
+                <ChevronDown className="w-5 h-5" />
+              ) : (
+                <ChevronRight className="w-5 h-5" />
+              )}
+            </button>
+            {expandedSections.operations && (
+              <div className="ml-4 space-y-3">
+                {navigationGroups.operations.map((item) => {
+                  const isActive = location.pathname === item.href;
+                  return (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className={cn(
+                        "flex items-center gap-3 px-4 py-3 text-base font-medium rounded-lg transition-all duration-200",
+                        isActive
+                          ? "bg-gradient-to-r from-primary to-water-blue text-white shadow-primary"
+                          : "text-slate-300 hover:text-white hover:bg-slate-700/50 hover:shadow-md hover:scale-105"
+                      )}
+                      onClick={() => setSidebarOpen(false)}
+                    >
+                      <item.icon className="w-5 h-5" />
+                      {item.name}
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Settings Section */}
+          <div className="mt-5">
+            <button
+              onClick={() => setExpandedSections(prev => ({ ...prev, settings: !prev.settings }))}
+              className="flex items-center justify-between w-full px-4 py-3 text-base font-semibold text-slate-300 hover:text-white transition-colors"
+            >
+              <span>Settings</span>
+              {expandedSections.settings ? (
+                <ChevronDown className="w-5 h-5" />
+              ) : (
+                <ChevronRight className="w-5 h-5" />
+              )}
+            </button>
+            {expandedSections.settings && (
+              <div className="ml-4 space-y-3">
+                {navigationGroups.settings.map((item) => {
+                  const isActive = location.pathname === item.href;
+                  return (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className={cn(
+                        "flex items-center gap-3 px-4 py-3 text-base font-medium rounded-lg transition-all duration-200",
+                        isActive
+                          ? "bg-gradient-to-r from-primary to-water-blue text-white shadow-primary"
+                          : "text-slate-300 hover:text-white hover:bg-slate-700/50 hover:shadow-md hover:scale-105"
+                      )}
+                      onClick={() => setSidebarOpen(false)}
+                    >
+                      <item.icon className="w-5 h-5" />
+                      {item.name}
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* AI Tools Section */}
+          <div className="mt-5">
+            <button
+              onClick={() => setExpandedSections(prev => ({ ...prev, aiTools: !prev.aiTools }))}
+              className="flex items-center justify-between w-full px-4 py-3 text-base font-semibold text-slate-300 hover:text-white transition-colors"
+            >
+              <span>AI Tools</span>
+              {expandedSections.aiTools ? (
+                <ChevronDown className="w-5 h-5" />
+              ) : (
+                <ChevronRight className="w-5 h-5" />
+              )}
+            </button>
+            {expandedSections.aiTools && (
+              <div className="ml-4 space-y-3">
+                {navigationGroups.aiTools.map((item) => {
+                  const isActive = location.pathname === item.href;
+                  return (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className={cn(
+                        "flex items-center gap-3 px-4 py-3 text-base font-medium rounded-lg transition-all duration-200",
+                        isActive
+                          ? "bg-gradient-to-r from-primary to-water-blue text-white shadow-primary"
+                          : "text-slate-300 hover:text-white hover:bg-slate-700/50 hover:shadow-md hover:scale-105"
+                      )}
+                      onClick={() => setSidebarOpen(false)}
+                    >
+                      <item.icon className="w-5 h-5" />
+                      {item.name}
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </nav>
 
-        {/* AI Integration Button */}
-        <div className="p-4 border-t border-slate-700 bg-slate-800/30">
-          <Link
-            to="/admin/ai-integration"
-            className={cn(
-              "flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 mb-4",
-              location.pathname === "/admin/ai-integration"
-                ? "bg-gradient-to-r from-accent to-accent/80 text-white shadow-lg"
-                : "text-slate-300 hover:text-white hover:bg-slate-700/50 hover:shadow-md hover:scale-105"
-            )}
-            onClick={() => setSidebarOpen(false)}
-          >
-            <Zap className="w-5 h-5" />
-            AI Integration
-          </Link>
-          <div className="border-t border-slate-700"></div>
-        </div>
+
 
         {/* Loyalty tier legend */}
         <div className="px-4 pb-4 bg-slate-800/30">
-          <h3 className="text-xs font-semibold text-slate-300 mb-2 uppercase tracking-wider">Loyalty Tiers</h3>
+          <h3 className="text-sm font-semibold text-slate-300 mb-3 uppercase tracking-wider">Loyalty Tiers</h3>
           <div className="grid grid-cols-2 gap-2">
-            <div className="flex items-center gap-1.5 p-2 rounded-md bg-slate-700/50">
-              <Crown className="w-3 h-3 text-loyalty-platinum" />
-              <span className="text-xs font-medium text-slate-300">Platinum</span>
+            <div className="flex items-center gap-2 p-2 rounded-md bg-slate-700/50">
+              <Crown className="w-4 h-4 text-loyalty-platinum" />
+              <span className="text-sm font-medium text-slate-300">Platinum</span>
             </div>
-            <div className="flex items-center gap-1.5 p-2 rounded-md bg-slate-700/50">
-              <Medal className="w-3 h-3 text-loyalty-gold" />
-              <span className="text-xs font-medium text-slate-300">Gold</span>
+            <div className="flex items-center gap-2 p-2 rounded-md bg-slate-700/50">
+              <Medal className="w-4 h-4 text-loyalty-gold" />
+              <span className="text-sm font-medium text-slate-300">Gold</span>
             </div>
-            <div className="flex items-center gap-1.5 p-2 rounded-md bg-slate-700/50">
-              <Gem className="w-3 h-3 text-loyalty-silver" />
-              <span className="text-xs font-medium text-slate-300">Silver</span>
+            <div className="flex items-center gap-2 p-2 rounded-md bg-slate-700/50">
+              <Gem className="w-4 h-4 text-loyalty-silver" />
+              <span className="text-sm font-medium text-slate-300">Silver</span>
             </div>
-            <div className="flex items-center gap-1.5 p-2 rounded-md bg-slate-700/50">
-              <Star className="w-3 h-3 text-accent" />
-              <span className="text-xs font-medium text-slate-300">Lead</span>
+            <div className="flex items-center gap-2 p-2 rounded-md bg-slate-700/50">
+              <Star className="w-4 h-4 text-accent" />
+              <span className="text-sm font-medium text-slate-300">Lead</span>
             </div>
           </div>
         </div>
@@ -286,7 +452,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               <div>
                   <div>
                     <h2 className="text-xl font-semibold text-foreground">
-                      {navigation.find(item => item.href === location.pathname)?.name || "Dashboard"}
+                      {Object.values(navigationGroups).flat().find(item => item.href === location.pathname)?.name || "Dashboard"}
                     </h2>
                   </div>
               </div>

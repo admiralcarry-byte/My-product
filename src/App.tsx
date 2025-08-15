@@ -14,6 +14,7 @@ import Cashback from "./pages/admin/Cashback";
 import Reports from "./pages/admin/Reports";
 import Notifications from "./pages/admin/Notifications";
 import Campaigns from "./pages/admin/Campaigns";
+import Stores from "./pages/admin/Stores";
 import AdminWelcome from "./pages/admin/Welcome";
 import AdminLogin from "./pages/admin/Login";
 import AdminProfile from "./pages/admin/Profile";
@@ -52,6 +53,7 @@ const App = () => (
           <Route path="/admin/reports" element={<AdminLayout><Reports /></AdminLayout>} />
           <Route path="/admin/notifications" element={<AdminLayout><Notifications /></AdminLayout>} />
           <Route path="/admin/campaigns" element={<AdminLayout><Campaigns /></AdminLayout>} />
+          <Route path="/admin/stores" element={<AdminLayout><Stores /></AdminLayout>} />
           <Route path="/admin/profile" element={<AdminLayout><AdminProfile /></AdminLayout>} />
           <Route path="/admin/settings" element={<AdminLayout><AdminSettings /></AdminLayout>} />
           <Route path="/admin/ai-integration" element={<AdminLayout><AIIntegration /></AdminLayout>} />

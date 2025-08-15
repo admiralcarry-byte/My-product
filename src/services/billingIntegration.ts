@@ -220,7 +220,7 @@ export class BillingIntegrationService {
     try {
       const transactions = await this.fetchTransactions();
       let totalPoints = 0;
-      let errors: string[] = [];
+      const errors: string[] = [];
 
       for (const transaction of transactions) {
         try {
