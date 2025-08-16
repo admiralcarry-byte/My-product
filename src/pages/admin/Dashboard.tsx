@@ -36,8 +36,11 @@ import {
   Eye,
   ArrowUpRight,
   Calendar,
+  MapPin,
+  Globe,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { geolocationService } from "@/services/geolocation";
 
 const Dashboard = () => {
   // Mock data for charts
@@ -68,6 +71,14 @@ const Dashboard = () => {
     { name: "Pedro Influencer", network: 145, commission: "$1,250", tier: "Platinum" },
     { name: "Sofia Marketing", network: 98, commission: "$890", tier: "Gold" },
     { name: "Miguel Promo", network: 67, commission: "$560", tier: "Silver" },
+  ];
+
+  // Mock store locations for dashboard
+  const storeLocations = [
+    { name: "Luanda Central", city: "Luanda", latitude: -8.8383, longitude: 13.2344, sales: 125000 },
+    { name: "Benguela", city: "Benguela", latitude: -12.5778, longitude: 13.4077, sales: 89000 },
+    { name: "Huambo", city: "Huambo", latitude: -12.7761, longitude: 15.7392, sales: 75000 },
+    { name: "Lobito", city: "Lobito", latitude: -12.3647, longitude: 13.5361, sales: 65000 },
   ];
 
   const getTierIcon = (tier: string) => {
@@ -286,6 +297,70 @@ const Dashboard = () => {
                   </span>
                 </div>
               ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Store Locations Overview */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card className="border-0 shadow-sm">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-primary" />
+              Store Locations
+            </CardTitle>
+            <CardDescription>Geographic distribution of our stores</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {storeLocations.map((store, index) => (
+                <div key={index} className="flex items-center justify-between p-3 rounded-lg border bg-muted/20">
+                  <div className="flex items-center gap-3">
+                    <div className="w-3 h-3 bg-primary rounded-full"></div>
+                    <div>
+                      <div className="font-medium text-sm">{store.name}</div>
+                      <div className="text-xs text-muted-foreground">{store.city}</div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm font-medium">${store.sales.toLocaleString()}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {store.latitude.toFixed(4)}, {store.longitude.toFixed(4)}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-0 shadow-sm">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Globe className="w-5 h-5 text-primary" />
+              Geographic Coverage
+            </CardTitle>
+            <CardDescription>Store distribution across Angola</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Cities Covered</span>
+                <span className="font-semibold">{new Set(storeLocations.map(s => s.city)).size}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Total Stores</span>
+                <span className="font-semibold">{storeLocations.length}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Northernmost</span>
+                <span className="font-semibold">Luanda</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Southernmost</span>
+                <span className="font-semibold">Lobito</span>
+              </div>
             </div>
           </CardContent>
         </Card>

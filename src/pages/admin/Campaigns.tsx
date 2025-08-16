@@ -64,13 +64,13 @@ const Campaigns = () => {
   });
   const { toast } = useToast();
 
-  // Mock shop data
+  // Mock shop data with geolocation
   const [availableShops, setAvailableShops] = useState([
-    { id: "shop1", name: "Água Twezah - Luanda Central", city: "Luanda", address: "Rua Comandante Valódia, 123", status: "active" },
-    { id: "shop2", name: "Água Twezah - Benguela", city: "Benguela", address: "Avenida 4 de Fevereiro, 45", status: "active" },
-    { id: "shop3", name: "Água Twezah - Huambo", city: "Huambo", address: "Rua Rainha Ginga, 67", status: "active" },
-    { id: "shop4", name: "Água Twezah - Lobito", city: "Lobito", address: "Avenida da Marginal, 89", status: "active" },
-    { id: "shop5", name: "Água Twezah - Luanda Norte", city: "Luanda", address: "Rua Rainha Nzinga, 234", status: "active" }
+    { id: "shop1", name: "Água Twezah - Luanda Central", city: "Luanda", address: "Rua Comandante Valódia, 123", status: "active", latitude: -8.8383, longitude: 13.2344 },
+    { id: "shop2", name: "Água Twezah - Benguela", city: "Benguela", address: "Avenida 4 de Fevereiro, 45", status: "active", latitude: -12.5778, longitude: 13.4077 },
+    { id: "shop3", name: "Água Twezah - Huambo", city: "Huambo", address: "Rua Rainha Ginga, 67", status: "active", latitude: -12.7761, longitude: 15.7392 },
+    { id: "shop4", name: "Água Twezah - Lobito", city: "Lobito", address: "Avenida da Marginal, 89", status: "active", latitude: -12.3647, longitude: 13.5361 },
+    { id: "shop5", name: "Água Twezah - Luanda Norte", city: "Luanda", address: "Rua Rainha Nzinga, 234", status: "active", latitude: -8.8383, longitude: 13.2344 }
   ]);
 
   const campaigns = [

@@ -40,9 +40,14 @@ import {
   Star,
   Search,
   Droplets,
-  Store
+  Store,
+  Navigation,
+  Globe,
+  Target
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import StoreMap from "@/components/StoreMap";
+import { geolocationService, type StoreLocation } from "@/services/geolocation";
 
 interface Store {
   id: string;
@@ -59,6 +64,8 @@ interface Store {
   capacity: number;
   rating: number;
   totalSales: number;
+  latitude: number;
+  longitude: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -70,8 +77,10 @@ const Stores = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showMap, setShowMap] = useState(false);
+  const [selectedStoreForMap, setSelectedStoreForMap] = useState<string | null>(null);
 
-  // Mock stores data
+  // Mock stores data with geolocation
   const [stores, setStores] = useState<Store[]>([
     {
       id: "store1",
@@ -88,6 +97,8 @@ const Stores = () => {
       capacity: 5000,
       rating: 4.8,
       totalSales: 125000,
+      latitude: -8.8383,
+      longitude: 13.2344,
       createdAt: "2024-01-15",
       updatedAt: "2024-01-20"
     },
@@ -105,8 +116,48 @@ const Stores = () => {
       capacity: 3500,
       rating: 4.6,
       totalSales: 89000,
+      latitude: -12.5778,
+      longitude: 13.4077,
       createdAt: "2024-01-10",
       updatedAt: "2024-01-18"
+    },
+    {
+      id: "store3",
+      name: "Água Twezah - Huambo",
+      city: "Huambo",
+      address: "Rua Rainha Ginga, 67, Huambo",
+      phone: "+244 241 345 678",
+      email: "huambo@aguatwezah.ao",
+      status: "active",
+      type: "retail",
+      openingHours: "Mon-Sat: 8:00-19:00, Sun: 9:00-17:00",
+      manager: "Carlos Ferreira",
+      capacity: 4000,
+      rating: 4.5,
+      totalSales: 75000,
+      latitude: -12.7761,
+      longitude: 15.7392,
+      createdAt: "2024-01-12",
+      updatedAt: "2024-01-19"
+    },
+    {
+      id: "store4",
+      name: "Água Twezah - Lobito",
+      city: "Lobito",
+      address: "Avenida da Marginal, 89, Lobito",
+      phone: "+244 234 456 789",
+      email: "lobito@aguatwezah.ao",
+      status: "maintenance",
+      type: "both",
+      openingHours: "Mon-Sat: 7:00-18:30, Sun: 8:00-16:00",
+      manager: "Ana Costa",
+      capacity: 3000,
+      rating: 4.7,
+      totalSales: 65000,
+      latitude: -12.3647,
+      longitude: 13.5361,
+      createdAt: "2024-01-08",
+      updatedAt: "2024-01-16"
     }
   ]);
 
@@ -120,7 +171,9 @@ const Stores = () => {
     type: "retail" as "retail" | "wholesale" | "both",
     openingHours: "",
     manager: "",
-    capacity: 0
+    capacity: 0,
+    latitude: 0,
+    longitude: 0
   });
 
   const cities = ["Luanda", "Benguela", "Huambo", "Lobito", "Lubango", "Namibe", "Malanje", "Kuito"];
@@ -131,7 +184,7 @@ const Stores = () => {
     store.manager.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleAddStore = () => {
+  const handleAddStore = async () => {
     if (!newStore.name || !newStore.city || !newStore.address || !newStore.phone || !newStore.email) {
       toast({
         title: "Missing Information",
@@ -141,9 +194,21 @@ const Stores = () => {
       return;
     }
 
+    // Geocode the address to get coordinates
+    let coordinates = { latitude: 0, longitude: 0 };
+    try {
+      const coords = await geolocationService.geocodeAddress(newStore.address);
+      if (coords) {
+        coordinates = coords;
+      }
+    } catch (error) {
+      console.error("Error geocoding address:", error);
+    }
+
     const store: Store = {
       id: `store${Date.now()}`,
       ...newStore,
+      ...coordinates,
       status: "active",
       rating: 0,
       totalSales: 0,
@@ -162,13 +227,15 @@ const Stores = () => {
       type: "retail",
       openingHours: "",
       manager: "",
-      capacity: 0
+      capacity: 0,
+      latitude: 0,
+      longitude: 0
     });
     setIsAddDialogOpen(false);
 
     toast({
       title: "Store Added",
-      description: `Store "${store.name}" has been added successfully`,
+      description: `Store "${store.name}" has been added successfully with geolocation`,
     });
   };
 
@@ -377,6 +444,33 @@ const Stores = () => {
                   className="border-border focus:ring-2 focus:ring-primary/20"
                 />
               </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="storeLatitude" className="text-sm font-medium">Latitude</Label>
+                  <Input
+                    id="storeLatitude"
+                    type="number"
+                    step="any"
+                    placeholder="-8.8383"
+                    value={newStore.latitude}
+                    onChange={(e) => setNewStore({...newStore, latitude: parseFloat(e.target.value) || 0})}
+                    className="border-border focus:ring-2 focus:ring-primary/20"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="storeLongitude" className="text-sm font-medium">Longitude</Label>
+                  <Input
+                    id="storeLongitude"
+                    type="number"
+                    step="any"
+                    placeholder="13.2344"
+                    value={newStore.longitude}
+                    onChange={(e) => setNewStore({...newStore, longitude: parseFloat(e.target.value) || 0})}
+                    className="border-border focus:ring-2 focus:ring-primary/20"
+                  />
+                </div>
+              </div>
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
@@ -481,6 +575,44 @@ const Stores = () => {
         </CardContent>
       </Card>
 
+      {/* Store Map Section */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-semibold flex items-center gap-2">
+          <Globe className="w-5 h-5 text-primary" />
+          Store Locations
+        </h2>
+        <Button
+          variant="outline"
+          onClick={() => setShowMap(!showMap)}
+          className="flex items-center gap-2"
+        >
+          {showMap ? "Hide Map" : "Show Map"}
+        </Button>
+      </div>
+
+      {showMap && (
+        <StoreMap
+          stores={stores.map(store => ({
+            id: store.id,
+            name: store.name,
+            latitude: store.latitude,
+            longitude: store.longitude,
+            address: store.address,
+            city: store.city,
+            status: store.status,
+            type: store.type
+          }))}
+          onStoreSelect={(store) => {
+            const selectedStore = stores.find(s => s.id === store.id);
+            if (selectedStore) {
+              setSelectedStore(selectedStore);
+              setSelectedStoreForMap(store.id);
+            }
+          }}
+          selectedStoreId={selectedStoreForMap}
+        />
+      )}
+
       {/* Enhanced Stores Table */}
       <Card className="border-0 shadow-sm">
         <CardHeader className="bg-gradient-to-r from-white to-water-mist/20 rounded-t-lg">
@@ -496,6 +628,7 @@ const Stores = () => {
               <TableRow className="bg-muted/30">
                 <TableHead className="font-semibold">Store Name</TableHead>
                 <TableHead className="font-semibold">Location</TableHead>
+                <TableHead className="font-semibold">Coordinates</TableHead>
                 <TableHead className="font-semibold">Contact</TableHead>
                 <TableHead className="font-semibold">Type</TableHead>
                 <TableHead className="font-semibold">Status</TableHead>
@@ -522,6 +655,12 @@ const Stores = () => {
                           {store.address}
                         </div>
                       </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="text-xs text-muted-foreground">
+                      <div>{store.latitude.toFixed(4)}</div>
+                      <div>{store.longitude.toFixed(4)}</div>
                     </div>
                   </TableCell>
                   <TableCell>
@@ -727,6 +866,31 @@ const Stores = () => {
                   onChange={(e) => setSelectedStore({...selectedStore, openingHours: e.target.value})}
                   className="border-border focus:ring-2 focus:ring-primary/20"
                 />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="editStoreLatitude" className="text-sm font-medium">Latitude</Label>
+                  <Input
+                    id="editStoreLatitude"
+                    type="number"
+                    step="any"
+                    value={selectedStore.latitude}
+                    onChange={(e) => setSelectedStore({...selectedStore, latitude: parseFloat(e.target.value) || 0})}
+                    className="border-border focus:ring-2 focus:ring-primary/20"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="editStoreLongitude" className="text-sm font-medium">Longitude</Label>
+                  <Input
+                    id="editStoreLongitude"
+                    type="number"
+                    step="any"
+                    value={selectedStore.longitude}
+                    onChange={(e) => setSelectedStore({...selectedStore, longitude: parseFloat(e.target.value) || 0})}
+                    className="border-border focus:ring-2 focus:ring-primary/20"
+                  />
+                </div>
               </div>
             </div>
           )}
